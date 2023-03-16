@@ -1,0 +1,37 @@
+package relicrework.patches.localization;
+
+import basemod.ReflectionHacks;
+import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
+import com.evacipated.cardcrawl.modthespire.lib.SpirePostfixPatch;
+import com.evacipated.cardcrawl.modthespire.lib.SpirePrefixPatch;
+import com.evacipated.cardcrawl.modthespire.lib.SpireReturn;
+import com.megacrit.cardcrawl.localization.LocalizedStrings;
+import com.megacrit.cardcrawl.localization.RelicStrings;
+import relicrework.RelicRework;
+
+import java.util.Map;
+
+public class LocalizedStrings_Patch {
+    private static Map<String, RelicStrings> relics;
+
+    @SpirePatch(clz = LocalizedStrings.class, method = "<ctor>")
+    public static class LocalizedStrings_PostfixCtor {
+        @SpirePostfixPatch
+        public static void patch(LocalizedStrings __instance) {
+            LocalizedStrings_Patch.relics = ReflectionHacks.getPrivate(__instance, LocalizedStrings.class, "relics");
+        }
+    }
+
+    @SpirePatch(clz = LocalizedStrings.class, method = "getRelicStrings", paramtypez = {String.class})
+    public static class LocalizedStrings_PrefixGetRelicStrings {
+        @SpirePrefixPatch
+        public static SpireReturn<RelicStrings> patch(LocalizedStrings __instance, String relicName) {
+            RelicStrings relicStrings = LocalizedStrings_Patch.relics.get(RelicRework.makeID(relicName));
+            if (relicStrings != null) {
+                return SpireReturn.Return(relicStrings);
+            }
+
+            return SpireReturn.Continue();
+        }
+    }
+}

@@ -1,0 +1,162 @@
+package relicrework;
+
+import basemod.BaseMod;
+import basemod.ModLabeledToggleButton;
+import basemod.ModPanel;
+import basemod.interfaces.EditStringsSubscriber;
+import basemod.interfaces.PostInitializeSubscriber;
+import com.badlogic.gdx.scenes.scene2d.ui.Tree;
+import com.evacipated.cardcrawl.modthespire.lib.SpireConfig;
+import com.google.gson.Gson;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
+import com.megacrit.cardcrawl.helpers.FontHelper;
+import relicrework.util.GeneralUtils;
+import relicrework.util.TextureLoader;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.evacipated.cardcrawl.modthespire.Loader;
+import com.evacipated.cardcrawl.modthespire.ModInfo;
+import com.evacipated.cardcrawl.modthespire.Patcher;
+import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
+import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.localization.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.scannotation.AnnotationDB;
+
+import java.io.IOException;
+import java.util.*;
+
+@SpireInitializer
+public class RelicRework implements
+        EditStringsSubscriber,
+        PostInitializeSubscriber {
+    public static ModInfo info;
+    public static String modID;
+    static { loadModInfo(); }
+    public static final Logger logger = LogManager.getLogger(modID); //Used to output to the console.
+    private static final String resourcesFolder = "relicrework";
+    Properties defaultSettings = new Properties();
+
+    public static boolean changeCeramicFish = false;
+
+    public static String makeID(String id) {
+        return modID + ":" + id;
+    }
+
+    //This will be called by ModTheSpire because of the @SpireInitializer annotation at the top of the class.
+    public static void initialize() {
+        new RelicRework();
+    }
+
+    public RelicRework() {
+        BaseMod.subscribe(this); //This will make BaseMod trigger all the subscribers at their appropriate times.
+        logger.info(modID + " subscribed to BaseMod.");
+
+        defaultSettings.setProperty("change-ceramic-fish", Boolean.toString(true));
+
+        try {
+            SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
+            config.load();
+
+            changeCeramicFish = config.getBool("change-ceramic-fish");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void receivePostInitialize() {
+        UIStrings configStrings = CardCrawlGame.languagePack.getUIString(makeID("ConfigMenuText"));
+        ModPanel settingsPanel = new ModPanel();
+        ModLabeledToggleButton enableChangeCeramicFishButton = new ModLabeledToggleButton(configStrings.TEXT[0], 350.0F, 750.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeCeramicFish, settingsPanel, label -> { }, button -> {
+            changeCeramicFish = button.enabled;
+            try {
+                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
+                config.setBool("change-ceramic-fish", changeCeramicFish);
+                config.save();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        settingsPanel.addUIElement(enableChangeCeramicFishButton);
+
+        Texture badgeTexture = TextureLoader.getTexture(resourcePath("badge.png"));
+        BaseMod.registerModBadge(badgeTexture, info.Name, GeneralUtils.arrToString(info.Authors), info.Description, settingsPanel);
+    }
+
+    /*----------Localization----------*/
+
+    //This is used to load the appropriate localization files based on language.
+    private static String getLangString()
+    {
+        return Settings.language.name().toLowerCase();
+    }
+    private static final String defaultLanguage = "eng";
+
+    @Override
+    public void receiveEditStrings() {
+        /*
+            First, load the default localization.
+            Then, if the current language is different, attempt to load localization for that language.
+            This results in the default localization being used for anything that might be missing.
+            The same process is used to load keywords slightly below.
+        */
+        loadLocalization(defaultLanguage); //no except catching for default localization, you better have at least one that works.
+        if (!defaultLanguage.equals(getLangString())) {
+            try {
+                loadLocalization(getLangString());
+            }
+            catch (GdxRuntimeException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void loadLocalization(String lang) {
+        //While this does load every type of localization, most of these files are just outlines so that you can see how they're formatted.
+        //Feel free to comment out/delete any that you don't end up using.
+        BaseMod.loadCustomStringsFile(RelicStrings.class,
+                localizationPath(lang, "RelicStrings.json"));
+        BaseMod.loadCustomStringsFile(UIStrings.class,
+                localizationPath(lang, "UIStrings.json"));
+    }
+
+    //These methods are used to generate the correct filepaths to various parts of the resources folder.
+    public static String localizationPath(String lang, String file) {
+        return resourcesFolder + "/localization/" + lang + "/" + file;
+    }
+
+    public static String resourcePath(String file) {
+        return resourcesFolder + "/" + file;
+    }
+    public static String characterPath(String file) {
+        return resourcesFolder + "/character/" + file;
+    }
+    public static String powerPath(String file) {
+        return resourcesFolder + "/powers/" + file;
+    }
+    public static String relicPath(String file) {
+        return resourcesFolder + "/relics/" + file;
+    }
+
+
+    //This determines the mod's ID based on information stored by ModTheSpire.
+    private static void loadModInfo() {
+        Optional<ModInfo> infos = Arrays.stream(Loader.MODINFOS).filter((modInfo)->{
+            AnnotationDB annotationDB = Patcher.annotationDBMap.get(modInfo.jarURL);
+            if (annotationDB == null)
+                return false;
+            Set<String> initializers = annotationDB.getAnnotationIndex().getOrDefault(SpireInitializer.class.getName(), Collections.emptySet());
+            return initializers.contains(RelicRework.class.getName());
+        }).findFirst();
+        if (infos.isPresent()) {
+            info = infos.get();
+            modID = info.ID;
+        }
+        else {
+            throw new RuntimeException("Failed to determine mod info/ID based on initializer.");
+        }
+    }
+}
