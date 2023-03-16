@@ -10,6 +10,7 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireConfig;
 import com.google.gson.Gson;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.helpers.FontHelper;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import relicrework.util.GeneralUtils;
 import relicrework.util.TextureLoader;
 import com.badlogic.gdx.graphics.Texture;
@@ -39,6 +40,7 @@ public class RelicRework implements
     Properties defaultSettings = new Properties();
 
     public static boolean changeCeramicFish = false;
+    public static boolean changeMawBank = false;
 
     public static String makeID(String id) {
         return modID + ":" + id;
@@ -54,12 +56,14 @@ public class RelicRework implements
         logger.info(modID + " subscribed to BaseMod.");
 
         defaultSettings.setProperty("change-ceramic-fish", Boolean.toString(true));
+        defaultSettings.setProperty("change-maw-bank", Boolean.toString(true));
 
         try {
             SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
             config.load();
 
             changeCeramicFish = config.getBool("change-ceramic-fish");
+            changeMawBank = config.getBool("change-maw-bank");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -79,8 +83,19 @@ public class RelicRework implements
                 throw new RuntimeException(e);
             }
         });
+        ModLabeledToggleButton enableChangeMawBankButton = new ModLabeledToggleButton(configStrings.TEXT[1], 350.0F, 700.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeMawBank, settingsPanel, label -> { }, button -> {
+            changeMawBank = button.enabled;
+            try {
+                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
+                config.setBool("change-maw-bank", changeMawBank);
+                config.save();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         settingsPanel.addUIElement(enableChangeCeramicFishButton);
+        settingsPanel.addUIElement(enableChangeMawBankButton);
 
         Texture badgeTexture = TextureLoader.getTexture(resourcePath("badge.png"));
         BaseMod.registerModBadge(badgeTexture, info.Name, GeneralUtils.arrToString(info.Authors), info.Description, settingsPanel);
