@@ -42,6 +42,7 @@ public class RelicRework implements
     public static boolean changeCeramicFish = false;
     public static boolean changeMawBank = false;
     public static boolean changeStrawberry = false;
+    public static boolean changeDarkstonePeriapt = false;
 
     public static String makeID(String id) {
         return modID + ":" + id;
@@ -59,6 +60,7 @@ public class RelicRework implements
         defaultSettings.setProperty("change-ceramic-fish", Boolean.toString(true));
         defaultSettings.setProperty("change-maw-bank", Boolean.toString(true));
         defaultSettings.setProperty("change-strawberry", Boolean.toString(true));
+        defaultSettings.setProperty("change-darkstone-periapt", Boolean.toString(true));
         try {
             SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
             config.load();
@@ -66,6 +68,7 @@ public class RelicRework implements
             changeCeramicFish = config.getBool("change-ceramic-fish");
             changeMawBank = config.getBool("change-maw-bank");
             changeStrawberry = config.getBool("change-strawberry");
+            changeDarkstonePeriapt = config.getBool("change-darkstone-periapt");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -105,10 +108,21 @@ public class RelicRework implements
                 throw new RuntimeException(e);
             }
         });
+        ModLabeledToggleButton enableChangeDarkstonePeriaptButton = new ModLabeledToggleButton(configStrings.TEXT[3], 350.0F, 600.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeDarkstonePeriapt, settingsPanel, label -> { }, button -> {
+            changeDarkstonePeriapt = button.enabled;
+            try {
+                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
+                config.setBool("change-darkstone-periapt", changeDarkstonePeriapt);
+                config.save();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         settingsPanel.addUIElement(enableChangeCeramicFishButton);
         settingsPanel.addUIElement(enableChangeMawBankButton);
         settingsPanel.addUIElement(enableChangeStrawberryButton);
+        settingsPanel.addUIElement(enableChangeDarkstonePeriaptButton);
 
         Texture badgeTexture = TextureLoader.getTexture(resourcePath("badge.png"));
         BaseMod.registerModBadge(badgeTexture, info.Name, GeneralUtils.arrToString(info.Authors), info.Description, settingsPanel);

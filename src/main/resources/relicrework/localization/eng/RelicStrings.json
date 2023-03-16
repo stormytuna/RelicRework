@@ -19,5 +19,12 @@
     "DESCRIPTIONS": [
       "Upon pickup, raise your Max HP by #b7. At the end of combat, heal #b1 HP."
     ]
+  },
+  "${modID}:Darkstone Periapt": {
+    "NAME": "Darkstone Periapt",
+    "FLAVOR": "\nThis stone draws power from dark energy, converting it into vitality for the wearer.",
+    "DESCRIPTIONS": [
+      "Whenever you draw a #rCurse, draw #b1 card."
+    ]
   }
 }
