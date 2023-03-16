@@ -41,6 +41,7 @@ public class RelicRework implements
 
     public static boolean changeCeramicFish = false;
     public static boolean changeMawBank = false;
+    public static boolean changeStrawberry = false;
 
     public static String makeID(String id) {
         return modID + ":" + id;
@@ -57,13 +58,14 @@ public class RelicRework implements
 
         defaultSettings.setProperty("change-ceramic-fish", Boolean.toString(true));
         defaultSettings.setProperty("change-maw-bank", Boolean.toString(true));
-
+        defaultSettings.setProperty("change-strawberry", Boolean.toString(true));
         try {
             SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
             config.load();
 
             changeCeramicFish = config.getBool("change-ceramic-fish");
             changeMawBank = config.getBool("change-maw-bank");
+            changeStrawberry = config.getBool("change-strawberry");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -93,9 +95,20 @@ public class RelicRework implements
                 throw new RuntimeException(e);
             }
         });
+        ModLabeledToggleButton enableChangeStrawberryButton = new ModLabeledToggleButton(configStrings.TEXT[2], 350.0F, 650.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeStrawberry, settingsPanel, label -> { }, button -> {
+            changeStrawberry = button.enabled;
+            try {
+                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
+                config.setBool("change-strawberry", changeStrawberry);
+                config.save();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         settingsPanel.addUIElement(enableChangeCeramicFishButton);
         settingsPanel.addUIElement(enableChangeMawBankButton);
+        settingsPanel.addUIElement(enableChangeStrawberryButton);
 
         Texture badgeTexture = TextureLoader.getTexture(resourcePath("badge.png"));
         BaseMod.registerModBadge(badgeTexture, info.Name, GeneralUtils.arrToString(info.Authors), info.Description, settingsPanel);

@@ -12,5 +12,12 @@
     "DESCRIPTIONS": [
       "Whenever you climb a floor, store #b12 #yGold. Right click to smash open and gain all #yGold inside. No longer works once smashed open."
     ]
+  },
+  "${modID}:Strawberry": {
+    "NAME": "Strawberry",
+    "FLAVOR": "\"Delicious! Haven't seen any of these since the blight.\" - Ranwid",
+    "DESCRIPTIONS": [
+      "Upon pickup, raise your Max HP by #b7. At the end of combat, heal #b1 HP."
+    ]
   }
 }
