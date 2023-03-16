@@ -16,6 +16,14 @@ import java.lang.reflect.Field;
 public class MawBank_Patch {
     private static final int GOLD_PER_FLOOR = 12;
     private static final RelicStrings relicStrings = CardCrawlGame.languagePack.getRelicStrings("MawBank");
+    private static final String onRightClickMethodBody = "" +
+            "{" +
+            "   if (relicrework.RelicRework.changeMawBank && !this.usedUp) { " +
+            "       com.megacrit.cardcrawl.dungeons.AbstractDungeon.player.gainGold(this.counter);" +
+            "       this.usedUp();" +
+            "       this.counter = -2;" +
+            "   }" +
+            "}";
 
     @SpirePatch(clz = MawBank.class, method = SpirePatch.CONSTRUCTOR)
     public static class MawBank_RawPatch {
@@ -27,7 +35,7 @@ public class MawBank_Patch {
             CtClass clickableRelic = ctClassPool.get("com.evacipated.cardcrawl.mod.stslib.relics.ClickableRelic");
             ctClass.addInterface(clickableRelic);
 
-            CtMethod onRightClick = CtNewMethod.make(CtClass.voidType, "onRightClick", new CtClass[] { }, null, "{ if (relicrework.RelicRework.changeMawBank && !this.usedUp) { com.megacrit.cardcrawl.dungeons.AbstractDungeon.player.gainGold(this.counter); this.usedUp(); this.counter = -2; } }", ctClass);
+            CtMethod onRightClick = CtNewMethod.make(CtClass.voidType, "onRightClick", new CtClass[] { }, null, onRightClickMethodBody, ctClass);
             ctClass.addMethod(onRightClick);
         }
     }
