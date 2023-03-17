@@ -43,6 +43,8 @@ public class RelicRework implements
     public static boolean changeMawBank = false;
     public static boolean changeStrawberry = false;
     public static boolean changeDarkstonePeriapt = false;
+    public static boolean changePear = false;
+    public static boolean changeStrikeDummy = false;
 
     public static String makeID(String id) {
         return modID + ":" + id;
@@ -61,6 +63,8 @@ public class RelicRework implements
         defaultSettings.setProperty("change-maw-bank", Boolean.toString(true));
         defaultSettings.setProperty("change-strawberry", Boolean.toString(true));
         defaultSettings.setProperty("change-darkstone-periapt", Boolean.toString(true));
+        defaultSettings.setProperty("change-pear", Boolean.toString(true));
+        defaultSettings.setProperty("change-strike-dummy", Boolean.toString(true));
         try {
             SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
             config.load();
@@ -69,6 +73,8 @@ public class RelicRework implements
             changeMawBank = config.getBool("change-maw-bank");
             changeStrawberry = config.getBool("change-strawberry");
             changeDarkstonePeriapt = config.getBool("change-darkstone-periapt");
+            changePear = config.getBool("change-pear");
+            changeStrikeDummy = config.getBool("change-strike-dummy");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -118,11 +124,33 @@ public class RelicRework implements
                 throw new RuntimeException(e);
             }
         });
+        ModLabeledToggleButton enableChangePearButton = new ModLabeledToggleButton(configStrings.TEXT[4], 350.0F, 550.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changePear, settingsPanel, label -> { }, button -> {
+            changePear = button.enabled;
+            try {
+                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
+                config.setBool("change-pear", changePear);
+                config.save();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        ModLabeledToggleButton enableChangeStrikeDummyButton = new ModLabeledToggleButton(configStrings.TEXT[5], 350.0F, 500.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeStrikeDummy, settingsPanel, label -> { }, button -> {
+            changeStrikeDummy = button.enabled;
+            try {
+                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
+                config.setBool("change-strike-dummy", changeStrikeDummy);
+                config.save();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         settingsPanel.addUIElement(enableChangeCeramicFishButton);
         settingsPanel.addUIElement(enableChangeMawBankButton);
         settingsPanel.addUIElement(enableChangeStrawberryButton);
         settingsPanel.addUIElement(enableChangeDarkstonePeriaptButton);
+        settingsPanel.addUIElement(enableChangePearButton);
+        settingsPanel.addUIElement(enableChangeStrikeDummyButton);
 
         Texture badgeTexture = TextureLoader.getTexture(resourcePath("badge.png"));
         BaseMod.registerModBadge(badgeTexture, info.Name, GeneralUtils.arrToString(info.Authors), info.Description, settingsPanel);

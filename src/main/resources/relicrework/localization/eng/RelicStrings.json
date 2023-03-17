@@ -22,9 +22,23 @@
   },
   "${modID}:Darkstone Periapt": {
     "NAME": "Darkstone Periapt",
-    "FLAVOR": "\nThis stone draws power from dark energy, converting it into vitality for the wearer.",
+    "FLAVOR": "This stone draws power from dark energy, converting it into vitality for the wearer.",
     "DESCRIPTIONS": [
       "Whenever you draw a #rCurse, draw #b1 card."
+    ]
+  },
+  "${modID}:Pear": {
+    "NAME": "Pear",
+    "FLAVOR": "A common fruit before the Spireblight.",
+    "DESCRIPTIONS": [
+      "Upon pickup, raise your Max HP by #b10. Whenever you heal, heal an additional #b1 HP."
+    ]
+  },
+  "${modID}:Strike Dummy": {
+    "NAME": "Strike Dummy",
+    "FLAVOR": "It's beat up.",
+    "DESCRIPTIONS": [
+      "Basic and Common Attacks deal #b3 additional damage."
     ]
   }
 }
