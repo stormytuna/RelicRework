@@ -40,5 +40,12 @@
     "DESCRIPTIONS": [
       "Basic and Common Attacks deal #b3 additional damage."
     ]
+  },
+  "${modID}:Girya": {
+    "NAME": "Girya",
+    "FLAVOR": "This Girya is unfathomably heavy. You could train with this to get significantly stronger.",
+    "DESCRIPTIONS": [
+      "At the end of your first #b3 turns, gain #b1 #yStrength."
+    ]
   }
 }

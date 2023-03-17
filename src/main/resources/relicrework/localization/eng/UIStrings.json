@@ -6,7 +6,8 @@
       "Strawberry (Upon pickup, raise your Max HP by 7. At the end of combat, heal 1 HP.)",
       "Darkstone Periapt (Whenever you draw a Curse, draw 1 card.)",
       "Pear (Upon pickup, raise your Max HP by #b10. Whenever you heal, heal an additional #b1 HP.)",
-      "Strike Dummy (Basic and Common Attacks deal 3 additional damage.)"
+      "Strike Dummy (Basic and Common Attacks deal 3 additional damage.)",
+      "Girya (At the end of your first 3 turns, gain 1 Strength)"
     ]
   }
 }

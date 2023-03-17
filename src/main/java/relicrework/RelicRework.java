@@ -45,6 +45,7 @@ public class RelicRework implements
     public static boolean changeDarkstonePeriapt = false;
     public static boolean changePear = false;
     public static boolean changeStrikeDummy = false;
+    public static boolean changeGirya = false;
 
     public static String makeID(String id) {
         return modID + ":" + id;
@@ -65,6 +66,7 @@ public class RelicRework implements
         defaultSettings.setProperty("change-darkstone-periapt", Boolean.toString(true));
         defaultSettings.setProperty("change-pear", Boolean.toString(true));
         defaultSettings.setProperty("change-strike-dummy", Boolean.toString(true));
+        defaultSettings.setProperty("change-girya", Boolean.toString(true));
         try {
             SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
             config.load();
@@ -75,6 +77,7 @@ public class RelicRework implements
             changeDarkstonePeriapt = config.getBool("change-darkstone-periapt");
             changePear = config.getBool("change-pear");
             changeStrikeDummy = config.getBool("change-strike-dummy");
+            changeGirya = config.getBool("change-girya");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -144,6 +147,16 @@ public class RelicRework implements
                 throw new RuntimeException(e);
             }
         });
+        ModLabeledToggleButton enableChangeGiryaButton = new ModLabeledToggleButton(configStrings.TEXT[6], 350.0F, 450.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeGirya, settingsPanel, label -> { }, button -> {
+            changeGirya = button.enabled;
+            try {
+                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
+                config.setBool("change-girya", changeGirya);
+                config.save();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         settingsPanel.addUIElement(enableChangeCeramicFishButton);
         settingsPanel.addUIElement(enableChangeMawBankButton);
@@ -151,6 +164,7 @@ public class RelicRework implements
         settingsPanel.addUIElement(enableChangeDarkstonePeriaptButton);
         settingsPanel.addUIElement(enableChangePearButton);
         settingsPanel.addUIElement(enableChangeStrikeDummyButton);
+        settingsPanel.addUIElement(enableChangeGiryaButton);
 
         Texture badgeTexture = TextureLoader.getTexture(resourcePath("badge.png"));
         BaseMod.registerModBadge(badgeTexture, info.Name, GeneralUtils.arrToString(info.Authors), info.Description, settingsPanel);
