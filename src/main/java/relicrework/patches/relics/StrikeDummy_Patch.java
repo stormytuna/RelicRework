@@ -10,7 +10,7 @@ import com.megacrit.cardcrawl.relics.StrikeDummy;
 import relicrework.RelicRework;
 
 public class StrikeDummy_Patch {
-    private static final RelicStrings relicStrings = CardCrawlGame.languagePack.getRelicStrings("Strike Dummy");
+    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings("Strike Dummy");
 
     @SpirePatch(clz = StrikeDummy.class, method = "atDamageModify")
     public static class StrikeDummy_ReplaceAtDamageModify {
@@ -30,7 +30,7 @@ public class StrikeDummy_Patch {
     public static class StrikeDummy_ReplaceGetUpdatedDescription {
         @SpirePrefixPatch
         public static SpireReturn<String> patch(StrikeDummy __instance) {
-            return RelicRework.changeStrikeDummy ? SpireReturn.Return(relicStrings.DESCRIPTIONS[0]) : SpireReturn.Continue();
+            return RelicRework.changeStrikeDummy ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
         }
     }
 }

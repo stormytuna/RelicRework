@@ -11,8 +11,8 @@ import javassist.*;
 import relicrework.RelicRework;
 
 public class Strawberry_Patch {
-    private static final RelicStrings relicStrings = CardCrawlGame.languagePack.getRelicStrings("Strawberry");
-    private static final String onVictoryMethodBody = "" +
+    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings("Strawberry");
+    private static final String ON_VICTORY_METHOD_BODY = "" +
             "{" +
             "   if (relicrework.RelicRework.changeStrawberry) {" +
             "       this.flash();" +
@@ -30,7 +30,7 @@ public class Strawberry_Patch {
         public static void raw(CtBehavior ctMethodToPatch) throws CannotCompileException {
             CtClass ctClass = ctMethodToPatch.getDeclaringClass();
 
-            CtMethod onVictory = CtNewMethod.make(CtClass.voidType, "onVictory", new CtClass[] { }, null, onVictoryMethodBody, ctClass);
+            CtMethod onVictory = CtNewMethod.make(CtClass.voidType, "onVictory", null, null, ON_VICTORY_METHOD_BODY, ctClass);
             ctClass.addMethod(onVictory);
         }
     }
@@ -39,7 +39,7 @@ public class Strawberry_Patch {
     public static class Strawberry_ReplaceGetUpdatedDescription {
         @SpirePrefixPatch
         public static SpireReturn<String> patch(Strawberry __instance) {
-            return RelicRework.changeStrawberry ? SpireReturn.Return(relicStrings.DESCRIPTIONS[0]) : SpireReturn.Continue();
+            return RelicRework.changeStrawberry ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
         }
     }
 }

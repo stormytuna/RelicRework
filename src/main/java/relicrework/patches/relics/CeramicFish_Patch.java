@@ -15,12 +15,12 @@ import java.util.ArrayList;
 
 public class CeramicFish_Patch {
     private static final int FLAT_DISCOUNT = 20;
-    private static final RelicStrings relicStrings = CardCrawlGame.languagePack.getRelicStrings("CeramicFish");
+    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings("CeramicFish");
 
     @SpirePatch(clz = CeramicFish.class, method = "onObtainCard")
     public static class CeramicFish_RemoveOnObtainCard {
         @SpirePrefixPatch
-        public static SpireReturn patch(CeramicFish __instance, AbstractCard card) {
+        public static SpireReturn<Void> patch(CeramicFish __instance, AbstractCard card) {
             return RelicRework.changeCeramicFish ? SpireReturn.Return() : SpireReturn.Continue();
         }
     }
@@ -29,7 +29,7 @@ public class CeramicFish_Patch {
     public static class CeramicFish_ReplaceGetUpdatedDescription {
         @SpirePrefixPatch
         public static SpireReturn<String> patch(CeramicFish __instance) {
-            return RelicRework.changeCeramicFish ? SpireReturn.Return(relicStrings.DESCRIPTIONS[0]) : SpireReturn.Continue();
+            return RelicRework.changeCeramicFish ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
         }
     }
 

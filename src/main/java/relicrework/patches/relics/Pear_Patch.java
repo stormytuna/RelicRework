@@ -7,13 +7,12 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireReturn;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.localization.RelicStrings;
 import com.megacrit.cardcrawl.relics.Pear;
-import com.megacrit.cardcrawl.relics.Strawberry;
 import javassist.*;
 import relicrework.RelicRework;
 
 public class Pear_Patch {
-    private static final RelicStrings relicStrings = CardCrawlGame.languagePack.getRelicStrings("Pear");
-    private static final String onPlayerHealMethodBody = "" +
+    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings("Pear");
+    private static final String ON_PLAYER_HEAL_METHOD_BODY = "" +
             "{" +
             "   if (relicrework.RelicRework.changePear) { " +
             "       $1++; " +
@@ -27,7 +26,7 @@ public class Pear_Patch {
         public static void raw(CtBehavior ctMethodToPatch) throws CannotCompileException {
             CtClass ctClass = ctMethodToPatch.getDeclaringClass();
 
-            CtMethod onPlayerHeal = CtNewMethod.make(CtClass.intType, "onPlayerHeal", new CtClass[] { CtClass.intType }, null, onPlayerHealMethodBody, ctClass );
+            CtMethod onPlayerHeal = CtNewMethod.make(CtClass.intType, "onPlayerHeal", new CtClass[] { CtClass.intType }, null, ON_PLAYER_HEAL_METHOD_BODY, ctClass );
             ctClass.addMethod(onPlayerHeal);
         }
     }
@@ -36,7 +35,7 @@ public class Pear_Patch {
     public static class Pear_ReplaceGetUpdatedDescription {
         @SpirePrefixPatch
         public static SpireReturn<String> patch(Pear __instance) {
-            return RelicRework.changePear ? SpireReturn.Return(relicStrings.DESCRIPTIONS[0]) : SpireReturn.Continue();
+            return RelicRework.changePear ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
         }
     }
 }

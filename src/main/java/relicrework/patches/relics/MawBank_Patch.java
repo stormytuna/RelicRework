@@ -1,9 +1,6 @@
 package relicrework.patches.relics;
 
-import basemod.ReflectionHacks;
 import com.evacipated.cardcrawl.modthespire.lib.*;
-import com.megacrit.cardcrawl.actions.common.GainGoldAction;
-import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.localization.RelicStrings;
 import com.megacrit.cardcrawl.relics.MawBank;
@@ -11,12 +8,10 @@ import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import javassist.*;
 import relicrework.RelicRework;
 
-import java.lang.reflect.Field;
-
 public class MawBank_Patch {
     private static final int GOLD_PER_FLOOR = 12;
-    private static final RelicStrings relicStrings = CardCrawlGame.languagePack.getRelicStrings("MawBank");
-    private static final String onRightClickMethodBody = "" +
+    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings("MawBank");
+    private static final String ON_RIGHT_CLICK_METHOD_BODY = "" +
             "{" +
             "   if (relicrework.RelicRework.changeMawBank && !this.usedUp) { " +
             "       com.megacrit.cardcrawl.dungeons.AbstractDungeon.player.gainGold(this.counter);" +
@@ -35,7 +30,7 @@ public class MawBank_Patch {
             CtClass clickableRelic = ctClassPool.get("com.evacipated.cardcrawl.mod.stslib.relics.ClickableRelic");
             ctClass.addInterface(clickableRelic);
 
-            CtMethod onRightClick = CtNewMethod.make(CtClass.voidType, "onRightClick", new CtClass[] { }, null, onRightClickMethodBody, ctClass);
+            CtMethod onRightClick = CtNewMethod.make(CtClass.voidType, "onRightClick", null, null, ON_RIGHT_CLICK_METHOD_BODY, ctClass);
             ctClass.addMethod(onRightClick);
         }
     }
@@ -54,19 +49,14 @@ public class MawBank_Patch {
     public static class MawBank_ReplaceGetUpdatedDescription {
         @SpirePrefixPatch
         public static SpireReturn<String> patch(MawBank __instance) throws IllegalAccessException {
-            if (!RelicRework.changeMawBank) {
-                return SpireReturn.Continue();
-            }
-
-            Field goldStoredField = ReflectionHacks.getCachedField(__instance.getClass(), "goldStored");
-            return SpireReturn.Return(relicStrings.DESCRIPTIONS[0]);
+            return RelicRework.changeMawBank ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
         }
     }
 
     @SpirePatch(clz = MawBank.class, method = "onSpendGold")
     public static class MawBank_RemoveOnSpendGold {
         @SpirePrefixPatch
-        public static SpireReturn patch(MawBank __instance) {
+        public static SpireReturn<Void> patch(MawBank __instance) {
             return RelicRework.changeMawBank ? SpireReturn.Return() : SpireReturn.Continue();
         }
     }
@@ -74,7 +64,7 @@ public class MawBank_Patch {
     @SpirePatch(clz = MawBank.class, method = "onEnterRoom")
     public static class MawBank_ReplaceOnEnterRoom {
         @SpirePrefixPatch
-        public static SpireReturn patch(MawBank __instance, AbstractRoom room) throws IllegalAccessException {
+        public static SpireReturn<Void> patch(MawBank __instance, AbstractRoom room) throws IllegalAccessException {
             if (!RelicRework.changeMawBank || __instance.usedUp) {
                 return SpireReturn.Continue();
             }
