@@ -45,14 +45,6 @@ public class MawBank_Patch {
         }
     }
 
-    @SpirePatch(clz = MawBank.class, method = "getUpdatedDescription")
-    public static class MawBank_ReplaceGetUpdatedDescription {
-        @SpirePrefixPatch
-        public static SpireReturn<String> patch(MawBank __instance) throws IllegalAccessException {
-            return RelicRework.changeMawBank ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
-        }
-    }
-
     @SpirePatch(clz = MawBank.class, method = "onSpendGold")
     public static class MawBank_RemoveOnSpendGold {
         @SpirePrefixPatch
@@ -72,6 +64,14 @@ public class MawBank_Patch {
             __instance.flash();
             __instance.counter += GOLD_PER_FLOOR;
             return SpireReturn.Return();
+        }
+    }
+
+    @SpirePatch(clz = MawBank.class, method = "getUpdatedDescription")
+    public static class MawBank_ReplaceGetUpdatedDescription {
+        @SpirePrefixPatch
+        public static SpireReturn<String> patch(MawBank __instance) throws IllegalAccessException {
+            return RelicRework.changeMawBank ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
         }
     }
 }
