@@ -47,5 +47,12 @@
     "DESCRIPTIONS": [
       "At the end of your first #b3 turns, gain #b1 #yStrength."
     ]
+  },
+  "${modID}:Mango": {
+    "NAME": "Mango",
+    "FLAVOR": "The most coveted forgotten fruit. Impeccably preserved with no signs of Spireblight.",
+    "DESCRIPTIONS": [
+      "Upon pickup, raise your Max HP by #b14. Whenever you kill an enemy, heal #b2 HP."
+    ]
   }
 }
