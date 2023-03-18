@@ -54,5 +54,12 @@
     "DESCRIPTIONS": [
       "Upon pickup, raise your Max HP by #b14. Whenever you kill an enemy, heal #b2 HP."
     ]
+  },
+  "${modID}:Old Coin": {
+    "NAME": "Old Coin",
+    "FLAVOR": "Unique coins are highly valued by Merchants for their historical value and rare metallic composition.",
+    "DESCRIPTIONS": [
+      "Gain #b200 #yGold. Whenever you gain #yGold, gain an additional #b8."
+    ]
   }
 }
