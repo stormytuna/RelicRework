@@ -6,6 +6,7 @@ import com.evacipated.cardcrawl.modthespire.lib.SpirePrefixPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireReturn;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.localization.RelicStrings;
 import com.megacrit.cardcrawl.relics.CeramicFish;
 import com.megacrit.cardcrawl.shop.ShopScreen;
@@ -37,7 +38,7 @@ public class CeramicFish_Patch {
     public static class ShopScreen_ApplyDiscount {
         @SpirePostfixPatch
         public static void patch(ShopScreen __instance, ArrayList<AbstractCard> coloredCards, ArrayList<AbstractCard> colorlessCards) {
-            if (RelicRework.changeCeramicFish) {
+            if (RelicRework.changeCeramicFish && AbstractDungeon.player.hasRelic("CeramicFish")) {
                 for (AbstractCard coloredCard : __instance.coloredCards) {
                     int discountedPrice = coloredCard.price - FLAT_DISCOUNT;
                     coloredCard.price = Math.max(discountedPrice, 0);
