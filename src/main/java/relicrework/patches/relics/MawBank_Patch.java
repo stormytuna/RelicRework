@@ -14,6 +14,7 @@ public class MawBank_Patch {
     private static final String ON_RIGHT_CLICK_METHOD_BODY = "" +
             "{" +
             "   if (relicrework.RelicRework.changeMawBank && !this.usedUp) { " +
+            "       com.megacrit.cardcrawl.core.CardCrawlGame.sound.play(\"GOLD_GAIN\");" +
             "       com.megacrit.cardcrawl.dungeons.AbstractDungeon.player.gainGold(this.counter);" +
             "       this.usedUp();" +
             "       this.counter = -2;" +
