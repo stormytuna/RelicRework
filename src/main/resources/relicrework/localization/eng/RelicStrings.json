@@ -3,7 +3,7 @@
     "NAME": "Ceramic Fish",
     "FLAVOR": "Meticulously painted, these fish were revered to bring great fortune.",
     "DESCRIPTIONS": [
-      "Cards at the shop cost #b20 less #yGold."
+      "Cards and relics at the shop cost #b20 less #yGold."
     ]
   },
   "${modID}:MawBank": {
