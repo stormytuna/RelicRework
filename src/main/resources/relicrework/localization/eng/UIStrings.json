@@ -10,7 +10,8 @@
       "Girya (At the end of your first 3 turns, gain 1 Strength)",
       "Mango (Upon pickup, raise your Max HP by 14. Whenever you kill an enemy, heal 2 HP.)",
       "Old Coin (Gain 200 Gold. Whenever you gain Gold, gain an additional 8.)",
-      "Cauldron (Upon pickup, gain 1 potion slot and brew 1 potion of each rarity.)"
+      "Cauldron (Upon pickup, gain 1 potion slot and brew 1 potion of each rarity.)",
+      "Ring of the Snake (At the start of each combat, draw 1 additional card and gain 1 energy.)"
     ]
   }
 }

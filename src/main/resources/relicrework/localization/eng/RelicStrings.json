@@ -69,5 +69,12 @@
       "Upon pickup, gain #b1 potion slot and brew #b1 potion of each rarity.",
       "Blup blip bloop...!"
     ]
+  },
+  "${modID}:Ring of the Snake": {
+    "NAME": "Ring of the Snake",
+    "FLAVOR": "Made from a fossilized snake. Represents great skill as a huntress.",
+    "DESCRIPTIONS": [
+      "At the start of each combat, draw #b1 additional card and gain #b1 energy."
+    ]
   }
 }

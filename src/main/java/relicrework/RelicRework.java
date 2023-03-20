@@ -49,6 +49,7 @@ public class RelicRework implements
     public static boolean changeMango = false;
     public static boolean changeOldCoin = false;
     public static boolean changeCauldron = false;
+    public static boolean changeSnakeRing = false;
 
     public static String makeID(String id) {
         return modID + ":" + id;
@@ -73,6 +74,7 @@ public class RelicRework implements
         defaultSettings.setProperty("change-mango", Boolean.toString(true));
         defaultSettings.setProperty("change-old-coin", Boolean.toString(true));
         defaultSettings.setProperty("change-cauldron", Boolean.toString(true));
+        defaultSettings.setProperty("change-snake-ring", Boolean.toString(true));
         try {
             SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
             config.load();
@@ -87,6 +89,7 @@ public class RelicRework implements
             changeMango = config.getBool("change-mango");
             changeOldCoin = config.getBool("change-old-coin");
             changeCauldron = config.getBool("change-cauldron");
+            changeSnakeRing = config.getBool("change-snake-ring");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -196,6 +199,16 @@ public class RelicRework implements
                 throw new RuntimeException(e);
             }
         });
+        ModLabeledToggleButton enableChangeSnakeRingButton = new ModLabeledToggleButton(configStrings.TEXT[10], 300.0F, 300.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeSnakeRing, settingsPanel, label -> { }, button -> {
+            changeSnakeRing = button.enabled;
+            try {
+                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
+                config.setBool("change-snake-ring", changeSnakeRing);
+                config.save();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         settingsPanel.addUIElement(enableChangeCeramicFishButton);
         settingsPanel.addUIElement(enableChangeMawBankButton);
@@ -207,6 +220,7 @@ public class RelicRework implements
         settingsPanel.addUIElement(enableChangeMangoButton);
         settingsPanel.addUIElement(enableChangeOldCoinButton);
         settingsPanel.addUIElement(enableChangeCauldronButton);
+        settingsPanel.addUIElement(enableChangeSnakeRingButton);
 
         Texture badgeTexture = TextureLoader.getTexture(resourcePath("badge.png"));
         BaseMod.registerModBadge(badgeTexture, info.Name, GeneralUtils.arrToString(info.Authors), info.Description, settingsPanel);
