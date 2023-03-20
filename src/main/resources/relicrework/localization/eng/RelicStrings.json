@@ -61,5 +61,13 @@
     "DESCRIPTIONS": [
       "Gain #b200 #yGold. Whenever you gain #yGold, gain an additional #b8."
     ]
+  },
+  "${modID}:Cauldron": {
+    "NAME": "Cauldron",
+    "FLAVOR": "The Merchant is actually a rather skilled potion brewer. Buy 2 get 1 free.",
+    "DESCRIPTIONS": [
+      "Upon pickup, gain #b1 potion slot and brew #b1 potion of each rarity.",
+      "Blup blip bloop...!"
+    ]
   }
 }

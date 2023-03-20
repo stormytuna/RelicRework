@@ -48,6 +48,7 @@ public class RelicRework implements
     public static boolean changeGirya = false;
     public static boolean changeMango = false;
     public static boolean changeOldCoin = false;
+    public static boolean changeCauldron = false;
 
     public static String makeID(String id) {
         return modID + ":" + id;
@@ -71,6 +72,7 @@ public class RelicRework implements
         defaultSettings.setProperty("change-girya", Boolean.toString(true));
         defaultSettings.setProperty("change-mango", Boolean.toString(true));
         defaultSettings.setProperty("change-old-coin", Boolean.toString(true));
+        defaultSettings.setProperty("change-cauldron", Boolean.toString(true));
         try {
             SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
             config.load();
@@ -84,6 +86,7 @@ public class RelicRework implements
             changeGirya = config.getBool("change-girya");
             changeMango = config.getBool("change-mango");
             changeOldCoin = config.getBool("change-old-coin");
+            changeCauldron = config.getBool("change-cauldron");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -163,7 +166,7 @@ public class RelicRework implements
                 throw new RuntimeException(e);
             }
         });
-        ModLabeledToggleButton enableChangeMangoButton = new ModLabeledToggleButton(configStrings.TEXT[7], 350.0F, 450.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeMango, settingsPanel, label -> { }, button -> {
+        ModLabeledToggleButton enableChangeMangoButton = new ModLabeledToggleButton(configStrings.TEXT[7], 350.0F, 400.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeMango, settingsPanel, label -> { }, button -> {
             changeMango = button.enabled;
             try {
                 SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
@@ -173,11 +176,21 @@ public class RelicRework implements
                 throw new RuntimeException(e);
             }
         });
-        ModLabeledToggleButton enableChangeOldCoinButton = new ModLabeledToggleButton(configStrings.TEXT[8], 350.0F, 450.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeOldCoin, settingsPanel, label -> { }, button -> {
+        ModLabeledToggleButton enableChangeOldCoinButton = new ModLabeledToggleButton(configStrings.TEXT[8], 350.0F, 350.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeOldCoin, settingsPanel, label -> { }, button -> {
             changeOldCoin = button.enabled;
             try {
                 SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
                 config.setBool("change-old-coin", changeOldCoin);
+                config.save();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        ModLabeledToggleButton enableChangeCauldronButton = new ModLabeledToggleButton(configStrings.TEXT[9], 350.0F, 300.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeCauldron, settingsPanel, label -> { }, button -> {
+            changeCauldron = button.enabled;
+            try {
+                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
+                config.setBool("change-cauldron", changeCauldron);
                 config.save();
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -193,6 +206,7 @@ public class RelicRework implements
         settingsPanel.addUIElement(enableChangeGiryaButton);
         settingsPanel.addUIElement(enableChangeMangoButton);
         settingsPanel.addUIElement(enableChangeOldCoinButton);
+        settingsPanel.addUIElement(enableChangeCauldronButton);
 
         Texture badgeTexture = TextureLoader.getTexture(resourcePath("badge.png"));
         BaseMod.registerModBadge(badgeTexture, info.Name, GeneralUtils.arrToString(info.Authors), info.Description, settingsPanel);
