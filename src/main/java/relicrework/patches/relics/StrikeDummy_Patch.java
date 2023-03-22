@@ -10,7 +10,7 @@ import com.megacrit.cardcrawl.relics.StrikeDummy;
 import relicrework.RelicRework;
 
 public class StrikeDummy_Patch {
-    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings("Strike Dummy");
+    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(StrikeDummy.ID);
 
     @SpirePatch(clz = StrikeDummy.class, method = "atDamageModify")
     public static class StrikeDummy_ReplaceAtDamageModify {

@@ -11,7 +11,7 @@ import javassist.*;
 import relicrework.RelicRework;
 
 public class Strawberry_Patch {
-    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings("Strawberry");
+    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(Strawberry.ID);
     private static final String ON_VICTORY_METHOD_BODY = "" +
             "{" +
             "   if (relicrework.RelicRework.changeStrawberry) {" +

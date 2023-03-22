@@ -12,7 +12,7 @@ import javassist.*;
 import relicrework.RelicRework;
 
 public class DarkstonePeriapt_Patch {
-    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings("Darkstone Periapt");
+    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(DarkstonePeriapt.ID);
     private static final String ON_CARD_DRAW_METHOD_BODY = "" +
             "{" +
             "   com.megacrit.cardcrawl.characters.AbstractPlayer player = com.megacrit.cardcrawl.dungeons.AbstractDungeon.player;" +

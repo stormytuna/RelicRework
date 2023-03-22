@@ -13,7 +13,7 @@ import relicrework.RelicRework;
 import relicrework.util.GeneralUtils;
 
 public class Cauldron_Patch {
-    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings("Cauldron");
+    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(Cauldron.ID);
     private static final int NUM_POTIONS = 3;
 
     @SpirePatch(clz = Cauldron.class, method = "onEquip")

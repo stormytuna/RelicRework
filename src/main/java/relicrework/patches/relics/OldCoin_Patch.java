@@ -12,7 +12,7 @@ import javassist.*;
 import relicrework.RelicRework;
 
 public class OldCoin_Patch {
-    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings("Old Coin");
+    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(OldCoin.ID);
     private static final String ON_GAIN_GOLD_METHOD_BODY = "" +
             "{" +
             "   if (relicrework.RelicRework.changeOldCoin) {" +

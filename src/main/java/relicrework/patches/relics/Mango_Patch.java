@@ -12,7 +12,7 @@ import javassist.*;
 import relicrework.RelicRework;
 
 public class Mango_Patch {
-    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings("Mango");
+    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(Mango.ID);
     private static final String ON_MONSTER_DEATH_METHOD_BODY = "" +
             "{" +
             "   if (relicrework.RelicRework.changeMango && !$1.hasPower(\"Minion\")) {" +

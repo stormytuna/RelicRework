@@ -11,7 +11,7 @@ import relicrework.RelicRework;
 import java.util.ArrayList;
 
 public class Girya_Patch {
-    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings("Girya");
+    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(Girya.ID);
     private static final String ON_PLAYER_END_TURN_METHOD_BODY = "" +
             "{" +
             "   if (relicrework.RelicRework.changeGirya && !this.grayscale) {" +

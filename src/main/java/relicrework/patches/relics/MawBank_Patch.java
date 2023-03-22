@@ -10,7 +10,7 @@ import relicrework.RelicRework;
 
 public class MawBank_Patch {
     private static final int GOLD_PER_FLOOR = 12;
-    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings("MawBank");
+    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(MawBank.ID);
     private static final String ON_RIGHT_CLICK_METHOD_BODY = "" +
             "{" +
             "   if (relicrework.RelicRework.changeMawBank && !this.usedUp) { " +

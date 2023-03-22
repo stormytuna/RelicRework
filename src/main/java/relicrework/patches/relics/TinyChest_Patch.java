@@ -15,7 +15,7 @@ import com.megacrit.cardcrawl.helpers.EventHelper;
 import com.megacrit.cardcrawl.random.Random;
 
 public class TinyChest_Patch {
-    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings("Tiny Chest");
+    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(TinyChest.ID);
     private static final int MEDIUM_CHEST_CHANCE = 50;
     private static final int LARGE_CHEST_CHANCE = 33;
 
@@ -39,8 +39,8 @@ public class TinyChest_Patch {
     public static class EventHelper_UndoTinyChestCounterIncrement {
         @SpirePostfixPatch
         public static void patch(Random eventRng) {
-            if (AbstractDungeon.player.hasRelic("Tiny Chest") && RelicRework.changeTinyChest) {
-                AbstractRelic tinyChestRelic = AbstractDungeon.player.getRelic("Tiny Chest");
+            if (AbstractDungeon.player.hasRelic(TinyChest.ID) && RelicRework.changeTinyChest) {
+                AbstractRelic tinyChestRelic = AbstractDungeon.player.getRelic(TinyChest.ID);
                 tinyChestRelic.counter = -1;
             }
         }

@@ -11,7 +11,7 @@ import javassist.*;
 import relicrework.RelicRework;
 
 public class Pear_Patch {
-    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings("Pear");
+    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(Pear.ID);
     private static final String ON_PLAYER_HEAL_METHOD_BODY = "" +
             "{" +
             "   if (relicrework.RelicRework.changePear) { " +

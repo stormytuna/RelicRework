@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class CeramicFish_Patch {
     private static final int FLAT_DISCOUNT = 20;
-    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings("CeramicFish");
+    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(CeramicFish.ID);
 
     @SpirePatch(clz = CeramicFish.class, method = "onObtainCard")
     public static class CeramicFish_RemoveOnObtainCard {
@@ -40,7 +40,7 @@ public class CeramicFish_Patch {
     public static class ShopScreen_ApplyDiscount {
         @SpirePostfixPatch
         public static void patch(ShopScreen __instance, ArrayList<AbstractCard> coloredCards, ArrayList<AbstractCard> colorlessCards) {
-            if (RelicRework.changeCeramicFish && AbstractDungeon.player.hasRelic("CeramicFish")) {
+            if (RelicRework.changeCeramicFish && AbstractDungeon.player.hasRelic(CeramicFish.ID)) {
                 // Why is this even a private field :(
                 ArrayList<StoreRelic> relics =  ReflectionHacks.getPrivate(__instance, __instance.getClass(), "relics");
                 for (StoreRelic relic : relics) {
