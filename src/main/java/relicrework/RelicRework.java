@@ -51,6 +51,7 @@ public class RelicRework implements
     public static boolean changeCauldron = false;
     public static boolean changeSnakeRing = false;
     public static boolean changeTinyChest = false;
+    public static boolean changeDeadBranch = false;
 
     public static String makeID(String id) {
         return modID + ":" + id;
@@ -77,6 +78,7 @@ public class RelicRework implements
         defaultSettings.setProperty("change-cauldron", Boolean.toString(true));
         defaultSettings.setProperty("change-snake-ring", Boolean.toString(true));
         defaultSettings.setProperty("change-tiny-chest", Boolean.toString(true));
+        defaultSettings.setProperty("change-dead-branch", Boolean.toString(true));
         try {
             SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
             config.load();
@@ -93,6 +95,7 @@ public class RelicRework implements
             changeCauldron = config.getBool("change-cauldron");
             changeSnakeRing = config.getBool("change-snake-ring");
             changeTinyChest = config.getBool("change-tiny-chest");
+            changeDeadBranch = config.getBool("change-dead-branch");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -217,6 +220,16 @@ public class RelicRework implements
             try {
                 SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
                 config.setBool("change-tiny-chest", changeTinyChest);
+                config.save();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        ModLabeledToggleButton enableChangeDeadBranchButton = new ModLabeledToggleButton(configStrings.TEXT[12], 300.0F, 150.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeDeadBranch, settingsPanel, label -> { }, button -> {
+            changeDeadBranch = button.enabled;
+            try {
+                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
+                config.setBool("change-dead-branch", changeDeadBranch);
                 config.save();
             } catch (IOException e) {
                 throw new RuntimeException(e);

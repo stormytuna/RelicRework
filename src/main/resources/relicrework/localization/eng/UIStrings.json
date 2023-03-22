@@ -12,7 +12,8 @@
       "Old Coin (Gain 200 Gold. Whenever you gain Gold, gain an additional 8.)",
       "Cauldron (Upon pickup, gain 1 potion slot and brew 1 potion of each rarity.)",
       "Ring of the Snake (At the start of each combat, draw 1 additional card and gain 1 energy.)",
-      "Tiny Chest (Chests in Treasure rooms are more likely to be larger.)"
+      "Tiny Chest (Chests in Treasure rooms are more likely to be larger.)",
+      "Dead Branch (Whenever you Exhaust a card, add a random Exhausting card to your hand.)"
     ]
   }
 }
