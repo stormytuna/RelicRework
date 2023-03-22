@@ -52,6 +52,8 @@ public class RelicRework implements
     public static boolean changeSnakeRing = false;
     public static boolean changeTinyChest = false;
     public static boolean changeDeadBranch = false;
+    public static boolean changeStrangeSpoon = false;
+    public static boolean changeEnchiridion = false;
 
     public static String makeID(String id) {
         return modID + ":" + id;
@@ -79,6 +81,8 @@ public class RelicRework implements
         defaultSettings.setProperty("change-snake-ring", Boolean.toString(true));
         defaultSettings.setProperty("change-tiny-chest", Boolean.toString(true));
         defaultSettings.setProperty("change-dead-branch", Boolean.toString(true));
+        defaultSettings.setProperty("change-strange-spoon", Boolean.toString(true));
+        defaultSettings.setProperty("change-enchiridion", Boolean.toString(true));
         try {
             SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
             config.load();
@@ -96,6 +100,8 @@ public class RelicRework implements
             changeSnakeRing = config.getBool("change-snake-ring");
             changeTinyChest = config.getBool("change-tiny-chest");
             changeDeadBranch = config.getBool("change-dead-branch");
+            changeStrangeSpoon = config.getBool("change-strange-spoon");
+            changeEnchiridion = config.getBool("change-enchiridion");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -235,6 +241,26 @@ public class RelicRework implements
                 throw new RuntimeException(e);
             }
         });
+        ModLabeledToggleButton enableChangeStrangeSpoonButton = new ModLabeledToggleButton(configStrings.TEXT[13], 300.0F, 100.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeStrangeSpoon, settingsPanel, label -> { }, button -> {
+            changeStrangeSpoon = button.enabled;
+            try {
+                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
+                config.setBool("change-strange-spoon", changeStrangeSpoon);
+                config.save();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        ModLabeledToggleButton enableChangeEnchiridionButton = new ModLabeledToggleButton(configStrings.TEXT[14], 300.0F, 50.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeEnchiridion, settingsPanel, label -> { }, button -> {
+            changeEnchiridion = button.enabled;
+            try {
+                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
+                config.setBool("change-enchiridion", changeEnchiridion);
+                config.save();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         settingsPanel.addUIElement(enableChangeCeramicFishButton);
         settingsPanel.addUIElement(enableChangeMawBankButton);
@@ -248,6 +274,9 @@ public class RelicRework implements
         settingsPanel.addUIElement(enableChangeCauldronButton);
         settingsPanel.addUIElement(enableChangeSnakeRingButton);
         settingsPanel.addUIElement(enableChangeTinyChestButton);
+        settingsPanel.addUIElement(enableChangeDeadBranchButton);
+        settingsPanel.addUIElement(enableChangeStrangeSpoonButton);
+        settingsPanel.addUIElement(enableChangeEnchiridionButton);
 
         Texture badgeTexture = TextureLoader.getTexture(resourcePath("badge.png"));
         BaseMod.registerModBadge(badgeTexture, info.Name, GeneralUtils.arrToString(info.Authors), info.Description, settingsPanel);

@@ -90,5 +90,19 @@
     "DESCRIPTIONS": [
       "Whenever you #yExhaust a card, add a random #yExhausting card to your hand."
     ]
+  },
+  "${modID}:Strange Spoon": {
+    "NAME": "Strange Spoon",
+    "FLAVOR": "Staring at the spoon, it appears to bend and twist around before your eyes.",
+    "DESCRIPTIONS": [
+      "Every other #yExhaust card you play is discarded instead."
+    ]
+  },
+  "${modID}:Enchiridion": {
+    "NAME": "Enchiridion",
+    "FLAVOR": "The legendary journal of an ancient lich.",
+    "DESCRIPTIONS": [
+      "At the start of each combat, choose a #yPower card to your hand. It costs #b0 until the end of turn."
+    ]
   }
 }
