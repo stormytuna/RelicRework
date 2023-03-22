@@ -50,6 +50,7 @@ public class RelicRework implements
     public static boolean changeOldCoin = false;
     public static boolean changeCauldron = false;
     public static boolean changeSnakeRing = false;
+    public static boolean changeTinyChest = false;
 
     public static String makeID(String id) {
         return modID + ":" + id;
@@ -75,6 +76,7 @@ public class RelicRework implements
         defaultSettings.setProperty("change-old-coin", Boolean.toString(true));
         defaultSettings.setProperty("change-cauldron", Boolean.toString(true));
         defaultSettings.setProperty("change-snake-ring", Boolean.toString(true));
+        defaultSettings.setProperty("change-tiny-chest", Boolean.toString(true));
         try {
             SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
             config.load();
@@ -90,6 +92,7 @@ public class RelicRework implements
             changeOldCoin = config.getBool("change-old-coin");
             changeCauldron = config.getBool("change-cauldron");
             changeSnakeRing = config.getBool("change-snake-ring");
+            changeTinyChest = config.getBool("change-tiny-chest");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -199,11 +202,21 @@ public class RelicRework implements
                 throw new RuntimeException(e);
             }
         });
-        ModLabeledToggleButton enableChangeSnakeRingButton = new ModLabeledToggleButton(configStrings.TEXT[10], 300.0F, 300.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeSnakeRing, settingsPanel, label -> { }, button -> {
+        ModLabeledToggleButton enableChangeSnakeRingButton = new ModLabeledToggleButton(configStrings.TEXT[10], 300.0F, 250.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeSnakeRing, settingsPanel, label -> { }, button -> {
             changeSnakeRing = button.enabled;
             try {
                 SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
                 config.setBool("change-snake-ring", changeSnakeRing);
+                config.save();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        ModLabeledToggleButton enableChangeTinyChestButton = new ModLabeledToggleButton(configStrings.TEXT[11], 300.0F, 200.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeTinyChest, settingsPanel, label -> { }, button -> {
+            changeTinyChest = button.enabled;
+            try {
+                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
+                config.setBool("change-tiny-chest", changeTinyChest);
                 config.save();
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -221,6 +234,7 @@ public class RelicRework implements
         settingsPanel.addUIElement(enableChangeOldCoinButton);
         settingsPanel.addUIElement(enableChangeCauldronButton);
         settingsPanel.addUIElement(enableChangeSnakeRingButton);
+        settingsPanel.addUIElement(enableChangeTinyChestButton);
 
         Texture badgeTexture = TextureLoader.getTexture(resourcePath("badge.png"));
         BaseMod.registerModBadge(badgeTexture, info.Name, GeneralUtils.arrToString(info.Authors), info.Description, settingsPanel);

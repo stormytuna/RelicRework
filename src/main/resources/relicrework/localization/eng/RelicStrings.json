@@ -76,5 +76,12 @@
     "DESCRIPTIONS": [
       "At the start of each combat, draw #b1 additional card and gain #b1 energy."
     ]
+  },
+  "${modID}:Tiny Chest": {
+    "NAME": "Tiny Chest",
+    "FLAVOR": "\"A fine prototype.\" - The Architect",
+    "DESCRIPTIONS": [
+      "Chests in Treasure rooms are more likely to be larger."
+    ]
   }
 }
