@@ -14,7 +14,6 @@ import relicrework.RelicRework;
 
 public class SnakeRing_Patch {
     private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings("Ring of the Snake");
-
     private static final int ADDITIONAL_DRAW = 1;
     private static final int ADDITIONAL_ENERGY = 1;
 
