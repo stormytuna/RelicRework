@@ -17,8 +17,8 @@ import relicrework.RelicRework;
 import java.util.ArrayList;
 
 public class CeramicFish_Patch {
-    private static final int FLAT_DISCOUNT = 20;
     private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(CeramicFish.ID);
+    private static final int FLAT_DISCOUNT = 20;
 
     @SpirePatch(clz = CeramicFish.class, method = "onObtainCard")
     public static class CeramicFish_RemoveOnObtainCard {
