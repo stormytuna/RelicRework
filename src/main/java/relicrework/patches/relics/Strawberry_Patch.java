@@ -6,7 +6,6 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireRawPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireReturn;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.localization.RelicStrings;
-import com.megacrit.cardcrawl.relics.CeramicFish;
 import com.megacrit.cardcrawl.relics.Strawberry;
 import javassist.*;
 import relicrework.RelicRework;

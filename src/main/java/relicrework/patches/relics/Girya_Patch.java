@@ -1,8 +1,6 @@
 package relicrework.patches.relics;
 
 import com.evacipated.cardcrawl.modthespire.lib.*;
-import com.megacrit.cardcrawl.core.CardCrawlGame;
-import com.megacrit.cardcrawl.localization.RelicStrings;
 import com.megacrit.cardcrawl.relics.Girya;
 import com.megacrit.cardcrawl.ui.campfire.AbstractCampfireOption;
 import javassist.*;
