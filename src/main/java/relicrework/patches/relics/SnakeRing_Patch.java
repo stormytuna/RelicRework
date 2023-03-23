@@ -9,6 +9,7 @@ import com.megacrit.cardcrawl.actions.common.RelicAboveCreatureAction;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.localization.RelicStrings;
+import com.megacrit.cardcrawl.relics.CeramicFish;
 import com.megacrit.cardcrawl.relics.SnakeRing;
 import relicrework.RelicRework;
 
@@ -21,7 +22,7 @@ public class SnakeRing_Patch {
     public static class SnakeRing_ReplaceAtBattleStart {
         @SpirePrefixPatch
         public static SpireReturn<Void> patch(SnakeRing __instance) {
-            if (!RelicRework.changeSnakeRing) {
+            if (!RelicRework.isEnabled(SnakeRing.ID)) {
                 return SpireReturn.Continue();
             }
 
@@ -37,7 +38,7 @@ public class SnakeRing_Patch {
     public static class SnakeRing_ReplaceGetUpdatedDescription {
         @SpirePrefixPatch
         public static SpireReturn<String> patch(SnakeRing __instance) {
-            return RelicRework.changeSnakeRing ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
+            return RelicRework.isEnabled(SnakeRing.ID) ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
         }
     }
 }

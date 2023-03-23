@@ -15,7 +15,7 @@ public class Mango_Patch {
     private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(Mango.ID);
     private static final String ON_MONSTER_DEATH_METHOD_BODY = "" +
             "{" +
-            "   if (relicrework.RelicRework.changeMango && !$1.hasPower(\"Minion\")) {" +
+            "   if (relicrework.RelicRework.isEnabled(\"Mango\") && !$1.hasPower(\"Minion\")) {" +
             "       this.flash();" +
             "       com.megacrit.cardcrawl.characters.AbstractPlayer player = com.megacrit.cardcrawl.dungeons.AbstractDungeon.player;" +
             "       this.addToBot(new com.megacrit.cardcrawl.actions.common.HealAction(player, player, 2));" +
@@ -40,7 +40,7 @@ public class Mango_Patch {
     public static class Mango_ReplaceGetUpdatedDescription {
         @SpirePrefixPatch
         public static SpireReturn<String> patch(Mango __instance) throws IllegalAccessException {
-            return RelicRework.changeMango ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
+            return RelicRework.isEnabled(Mango.ID) ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
         }
     }
 }

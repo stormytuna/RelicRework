@@ -19,10 +19,9 @@ import javassist.*;
 import relicrework.RelicRework;
 
 public class LizardTail_Patch {
-    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(LizardTail.ID);
     private static final String ON_USE_CARD_METHOD_BODY = "" +
             "{" +
-            "   if (relicrework.RelicRework.changeLizardTail && !this.grayscale) {" +
+            "   if (relicrework.RelicRework.isEnabled(\"Lizard Tail\") && !this.grayscale) {" +
             "       this.counter++;" +
             "       this.beginPulse();" +
             "       if (this.counter >= 6) {" +
@@ -36,7 +35,7 @@ public class LizardTail_Patch {
             "}";
     private static final String AT_TURN_START_METHOD_BODY = "" +
             "{" +
-            "   if (relicrework.RelicRework.changeLizardTail) {" +
+            "   if (relicrework.RelicRework.isEnabled(\"Lizard Tail\")) {" +
             "       this.counter = 0;" +
             "       this.grayscale = false;" +
             "       this.beginPulse();" +
@@ -63,15 +62,7 @@ public class LizardTail_Patch {
     public static class LizardTail_RemoveOnTrigger {
         @SpirePrefixPatch
         public static SpireReturn<Void> patch(LizardTail __instance) {
-            return RelicRework.changeLizardTail ? SpireReturn.Return() : SpireReturn.Continue();
-        }
-    }
-
-    @SpirePatch(clz = LizardTail.class, method = "getUpdatedDescription")
-    public static class LizardTail_ReplaceGetUpdatedDescription {
-        @SpirePrefixPatch
-        public static SpireReturn<String> patch(LizardTail __instance) {
-            return RelicRework.changeLizardTail ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
+            return RelicRework.isEnabled(LizardTail.ID) ? SpireReturn.Return() : SpireReturn.Continue();
         }
     }
 }

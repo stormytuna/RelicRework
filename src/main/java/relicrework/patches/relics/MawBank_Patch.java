@@ -9,17 +9,16 @@ import javassist.*;
 import relicrework.RelicRework;
 
 public class MawBank_Patch {
-    private static final int GOLD_PER_FLOOR = 12;
-    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(MawBank.ID);
     private static final String ON_RIGHT_CLICK_METHOD_BODY = "" +
             "{" +
-            "   if (relicrework.RelicRework.changeMawBank && !this.usedUp) { " +
+            "   if (relicrework.RelicRework.isEnabled(\"MawBank\") && !this.usedUp) { " +
             "       com.megacrit.cardcrawl.core.CardCrawlGame.sound.play(\"GOLD_GAIN\");" +
             "       com.megacrit.cardcrawl.dungeons.AbstractDungeon.player.gainGold(this.counter);" +
             "       this.usedUp();" +
             "       this.counter = -2;" +
             "   }" +
             "}";
+    private static final int GOLD_PER_FLOOR = 12;
 
     @SpirePatch(clz = MawBank.class, method = SpirePatch.CONSTRUCTOR)
     public static class MawBank_RawPatch {
@@ -40,7 +39,7 @@ public class MawBank_Patch {
     public static class MawBank_InitializeCounterField {
         @SpirePostfixPatch
         public static void patch(MawBank __instance) {
-            if (RelicRework.changeMawBank) {
+            if (RelicRework.isEnabled(MawBank.ID)) {
                 __instance.counter = 0;
             }
         }
@@ -50,7 +49,7 @@ public class MawBank_Patch {
     public static class MawBank_RemoveOnSpendGold {
         @SpirePrefixPatch
         public static SpireReturn<Void> patch(MawBank __instance) {
-            return RelicRework.changeMawBank ? SpireReturn.Return() : SpireReturn.Continue();
+            return RelicRework.isEnabled(MawBank.ID) ? SpireReturn.Return() : SpireReturn.Continue();
         }
     }
 
@@ -58,21 +57,13 @@ public class MawBank_Patch {
     public static class MawBank_ReplaceOnEnterRoom {
         @SpirePrefixPatch
         public static SpireReturn<Void> patch(MawBank __instance, AbstractRoom room) throws IllegalAccessException {
-            if (!RelicRework.changeMawBank || __instance.usedUp) {
+            if (!RelicRework.isEnabled(MawBank.ID) || __instance.usedUp) {
                 return SpireReturn.Continue();
             }
 
             __instance.flash();
             __instance.counter += GOLD_PER_FLOOR;
             return SpireReturn.Return();
-        }
-    }
-
-    @SpirePatch(clz = MawBank.class, method = "getUpdatedDescription")
-    public static class MawBank_ReplaceGetUpdatedDescription {
-        @SpirePrefixPatch
-        public static SpireReturn<String> patch(MawBank __instance) throws IllegalAccessException {
-            return RelicRework.changeMawBank ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
         }
     }
 }

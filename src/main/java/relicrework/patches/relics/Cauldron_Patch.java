@@ -20,7 +20,7 @@ public class Cauldron_Patch {
     public static class Cauldron_ReplaceOnEquip {
         @SpirePrefixPatch
         public static SpireReturn<Void> patch(Cauldron __instance) {
-            if (!RelicRework.changeCauldron) {
+            if (!RelicRework.isEnabled(Cauldron.ID)) {
                 return SpireReturn.Continue();
             }
 
@@ -48,14 +48,6 @@ public class Cauldron_Patch {
             player.potions.add(new PotionSlot(player.potionSlots - 1));
 
             return SpireReturn.Return();
-        }
-    }
-
-    @SpirePatch(clz = Cauldron.class, method = "getUpdatedDescription")
-    public static class Cauldron_ReplaceGetUpdatedDescription {
-        @SpirePrefixPatch
-        public static SpireReturn<String> patch(Cauldron __instance) {
-            return RelicRework.changeCauldron ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
         }
     }
 }

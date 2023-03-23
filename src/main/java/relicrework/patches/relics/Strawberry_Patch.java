@@ -6,6 +6,7 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireRawPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireReturn;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.localization.RelicStrings;
+import com.megacrit.cardcrawl.relics.CeramicFish;
 import com.megacrit.cardcrawl.relics.Strawberry;
 import javassist.*;
 import relicrework.RelicRework;
@@ -14,7 +15,7 @@ public class Strawberry_Patch {
     private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(Strawberry.ID);
     private static final String ON_VICTORY_METHOD_BODY = "" +
             "{" +
-            "   if (relicrework.RelicRework.changeStrawberry) {" +
+            "   if (relicrework.RelicRework.isEnabled(\"Strawberry\")) {" +
             "       this.flash();" +
             "       com.megacrit.cardcrawl.characters.AbstractPlayer player = com.megacrit.cardcrawl.dungeons.AbstractDungeon.player;" +
             "       this.addToTop(new com.megacrit.cardcrawl.actions.common.RelicAboveCreatureAction(player, this));" +
@@ -39,7 +40,7 @@ public class Strawberry_Patch {
     public static class Strawberry_ReplaceGetUpdatedDescription {
         @SpirePrefixPatch
         public static SpireReturn<String> patch(Strawberry __instance) {
-            return RelicRework.changeStrawberry ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
+            return RelicRework.isEnabled(Strawberry.ID) ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
         }
     }
 }

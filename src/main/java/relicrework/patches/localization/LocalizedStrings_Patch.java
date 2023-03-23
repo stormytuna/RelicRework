@@ -14,8 +14,8 @@ import java.util.Map;
 public class LocalizedStrings_Patch {
     private static Map<String, RelicStrings> relics;
 
-    @SpirePatch(clz = LocalizedStrings.class, method = "<ctor>")
-    public static class LocalizedStrings_PostfixCtor {
+    @SpirePatch(clz = LocalizedStrings.class, method = SpirePatch.CONSTRUCTOR)
+    public static class LocalizedStrings_InitRelicStrings {
         @SpirePostfixPatch
         public static void patch(LocalizedStrings __instance) {
             LocalizedStrings_Patch.relics = ReflectionHacks.getPrivate(__instance, LocalizedStrings.class, "relics");
@@ -23,12 +23,14 @@ public class LocalizedStrings_Patch {
     }
 
     @SpirePatch(clz = LocalizedStrings.class, method = "getRelicStrings", paramtypez = {String.class})
-    public static class LocalizedStrings_PrefixGetRelicStrings {
+    public static class LocalizedStrings_ReplaceRelicStrings {
         @SpirePrefixPatch
         public static SpireReturn<RelicStrings> patch(LocalizedStrings __instance, String relicName) {
-            RelicStrings relicStrings = LocalizedStrings_Patch.relics.get(RelicRework.makeID(relicName));
-            if (relicStrings != null) {
-                return SpireReturn.Return(relicStrings);
+            if (RelicRework.isEnabled(relicName)) {
+                RelicStrings newRelicStrings = LocalizedStrings_Patch.relics.get(RelicRework.makeID(relicName));
+                if (newRelicStrings != null) {
+                    return SpireReturn.Return(newRelicStrings);
+                }
             }
 
             return SpireReturn.Continue();

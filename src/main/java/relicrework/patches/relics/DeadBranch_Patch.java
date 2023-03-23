@@ -13,13 +13,11 @@ import com.megacrit.cardcrawl.relics.DeadBranch;
 import relicrework.RelicRework;
 
 public class DeadBranch_Patch {
-    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(DeadBranch.ID);
-
     @SpirePatch(clz = DeadBranch.class, method = "onExhaust")
     public static class DeadBranch_ReplaceOnExhaust {
         @SpirePrefixPatch
         public static SpireReturn<Void> patch(DeadBranch __instance, AbstractCard card) {
-            if (!RelicRework.changeDeadBranch || AbstractDungeon.getMonsters().areMonstersBasicallyDead()) {
+            if (!RelicRework.isEnabled(DeadBranch.ID) || AbstractDungeon.getMonsters().areMonstersBasicallyDead()) {
                 return SpireReturn.Continue();
             }
 
@@ -33,14 +31,6 @@ public class DeadBranch_Patch {
             AbstractDungeon.actionManager.addToBottom(new MakeTempCardInHandAction(newCard, false));
 
             return SpireReturn.Return();
-        }
-    }
-
-    @SpirePatch(clz = DeadBranch.class, method = "getUpdatedDescription")
-    public static class DeadBranch_ReplaceGetUpdatedDescription {
-        @SpirePrefixPatch
-        public static SpireReturn<String> patch(DeadBranch __instance) {
-            return RelicRework.changeDeadBranch ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
         }
     }
 }

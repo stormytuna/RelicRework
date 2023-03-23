@@ -11,10 +11,9 @@ import relicrework.RelicRework;
 import java.util.ArrayList;
 
 public class Girya_Patch {
-    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(Girya.ID);
     private static final String ON_PLAYER_END_TURN_METHOD_BODY = "" +
             "{" +
-            "   if (relicrework.RelicRework.changeGirya && !this.grayscale) {" +
+            "   if (relicrework.RelicRework.isEnabled(\"Girya\") && !this.grayscale) {" +
             "       this.flash();" +
             "       this.counter--;" +
             "       com.megacrit.cardcrawl.characters.AbstractPlayer player = com.megacrit.cardcrawl.dungeons.AbstractDungeon.player;" +
@@ -28,7 +27,7 @@ public class Girya_Patch {
             "}";
     private static final String ON_VICTORY_METHOD_BODY = "" +
             "{" +
-            "   if (relicrework.RelicRework.changeGirya) {" +
+            "   if (relicrework.RelicRework.isEnabled(\"Girya\")) {" +
             "       this.counter = -1;" +
             "       this.grayscale = false;" +
             "   }" +
@@ -52,7 +51,7 @@ public class Girya_Patch {
     public static class Girya_ReplaceAtBattleStart {
         @SpirePrefixPatch
         public static SpireReturn<Void> patch(Girya __instance) {
-            if (!RelicRework.changeGirya) {
+            if (!RelicRework.isEnabled(Girya.ID)) {
                 return SpireReturn.Continue();
             }
 
@@ -65,7 +64,7 @@ public class Girya_Patch {
     public static class Girya_RemoveAddCampfireOption {
         @SpirePrefixPatch
         public static SpireReturn<Void> patch(Girya __instance, ArrayList<AbstractCampfireOption> options) {
-            return RelicRework.changeGirya ? SpireReturn.Return() : SpireReturn.Continue();
+            return RelicRework.isEnabled(Girya.ID) ? SpireReturn.Return() : SpireReturn.Continue();
         }
     }
 
@@ -73,15 +72,9 @@ public class Girya_Patch {
     public static class Girya_ResetCounterField {
         @SpirePostfixPatch
         public static void patch(Girya __instance) {
-            __instance.counter = -1;
-        }
-    }
-
-    @SpirePatch(clz = Girya.class, method = "getUpdatedDescription")
-    public static class Girya_ReplaceGetUpdatedDescription {
-        @SpirePrefixPatch
-        public static SpireReturn<String> patch(Girya __instance) {
-            return RelicRework.changeGirya ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
+            if (RelicRework.isEnabled(Girya.ID)) {
+                __instance.counter = -1;
+            }
         }
     }
 }

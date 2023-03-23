@@ -14,7 +14,7 @@ public class Pear_Patch {
     private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(Pear.ID);
     private static final String ON_PLAYER_HEAL_METHOD_BODY = "" +
             "{" +
-            "   if (relicrework.RelicRework.changePear) { " +
+            "   if (relicrework.RelicRework.isEnabled(\"Pear\")) { " +
             "       $1++; " +
             "   } " +
             "   return $1;" +
@@ -35,7 +35,7 @@ public class Pear_Patch {
     public static class Pear_ReplaceGetUpdatedDescription {
         @SpirePrefixPatch
         public static SpireReturn<String> patch(Pear __instance) {
-            return RelicRework.changePear ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
+            return RelicRework.isEnabled(Pear.ID) ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
         }
     }
 }

@@ -1,15 +1,19 @@
 package relicrework;
 
 import basemod.BaseMod;
+import basemod.ModLabel;
 import basemod.ModLabeledToggleButton;
 import basemod.ModPanel;
 import basemod.interfaces.EditStringsSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.evacipated.cardcrawl.modthespire.lib.SpireConfig;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.helpers.FontHelper;
+import com.megacrit.cardcrawl.relics.*;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import relicrework.util.GeneralUtils;
 import relicrework.util.TextureLoader;
@@ -26,6 +30,8 @@ import org.apache.logging.log4j.Logger;
 import org.scannotation.AnnotationDB;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @SpireInitializer
@@ -39,23 +45,47 @@ public class RelicRework implements
     private static final String resourcesFolder = "relicrework";
     Properties defaultSettings = new Properties();
 
-    public static boolean changeCeramicFish = false;
-    public static boolean changeMawBank = false;
-    public static boolean changeStrawberry = false;
-    public static boolean changeDarkstonePeriapt = false;
-    public static boolean changePear = false;
-    public static boolean changeStrikeDummy = false;
-    public static boolean changeGirya = false;
-    public static boolean changeMango = false;
-    public static boolean changeOldCoin = false;
-    public static boolean changeCauldron = false;
-    public static boolean changeSnakeRing = false;
-    public static boolean changeTinyChest = false;
-    public static boolean changeDeadBranch = false;
-    public static boolean changeStrangeSpoon = false;
-    public static boolean changeEnchiridion = false;
-    public static boolean changeBustedCrown = false;
-    public static boolean changeLizardTail = false;
+    private static final String CONFIG_PATH = "preferences/relicrework.cfg";
+    private static TreeMap<String, HashSet<String>> config = new TreeMap<>();
+    private static HashSet<String> disabled = new HashSet<>();
+
+    private static UIStrings getUIStrings(String uiName) {
+        return CardCrawlGame.languagePack.getUIString(makeID(uiName));
+    }
+
+    private static void saveConfig() {
+        String sConfig = new Gson().toJson(config);
+        Gdx.files.local(CONFIG_PATH).writeString(sConfig, false, String.valueOf(StandardCharsets.UTF_8));
+        logger.info("saved config=");
+    }
+
+    private static void loadConfig() {
+        if (Gdx.files.local(CONFIG_PATH).exists()) {
+            String sConfig = Gdx.files.local(CONFIG_PATH).readString(String.valueOf(StandardCharsets.UTF_8));
+            logger.info("loaded config=" + sConfig);
+            Type mapType = (new TypeToken<TreeMap<String, HashSet<String>>>() { }.getType());
+            config = new Gson().fromJson(sConfig, mapType);
+            disabled = config.get("disabled");
+        } else {
+            config.put("disabled", disabled);
+        }
+    }
+
+    public static boolean isDisabled(String relicID) {
+        return disabled.contains(relicID);
+    }
+
+    public static boolean isEnabled(String relicID) {
+        return !disabled.contains(relicID);
+    }
+
+    private static float xPos(int index) {
+        return 410.0F + 400.0F * (index / 10);
+    }
+
+    private static float yPos(int index) {
+        return 660.0F - 50F * (index % 10);
+    }
 
     public static String makeID(String id) {
         return modID + ":" + id;
@@ -69,245 +99,35 @@ public class RelicRework implements
     public RelicRework() {
         BaseMod.subscribe(this); //This will make BaseMod trigger all the subscribers at their appropriate times.
         logger.info(modID + " subscribed to BaseMod.");
-
-        defaultSettings.setProperty("change-ceramic-fish", Boolean.toString(true));
-        defaultSettings.setProperty("change-maw-bank", Boolean.toString(true));
-        defaultSettings.setProperty("change-strawberry", Boolean.toString(true));
-        defaultSettings.setProperty("change-darkstone-periapt", Boolean.toString(true));
-        defaultSettings.setProperty("change-pear", Boolean.toString(true));
-        defaultSettings.setProperty("change-strike-dummy", Boolean.toString(true));
-        defaultSettings.setProperty("change-girya", Boolean.toString(true));
-        defaultSettings.setProperty("change-mango", Boolean.toString(true));
-        defaultSettings.setProperty("change-old-coin", Boolean.toString(true));
-        defaultSettings.setProperty("change-cauldron", Boolean.toString(true));
-        defaultSettings.setProperty("change-snake-ring", Boolean.toString(true));
-        defaultSettings.setProperty("change-tiny-chest", Boolean.toString(true));
-        defaultSettings.setProperty("change-dead-branch", Boolean.toString(true));
-        defaultSettings.setProperty("change-strange-spoon", Boolean.toString(true));
-        defaultSettings.setProperty("change-enchiridion", Boolean.toString(true));
-        defaultSettings.setProperty("change-busted-crown", Boolean.toString(true));
-        defaultSettings.setProperty("change-lizard-tail", Boolean.toString(true));
-        try {
-            SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
-            config.load();
-
-            changeCeramicFish = config.getBool("change-ceramic-fish");
-            changeMawBank = config.getBool("change-maw-bank");
-            changeStrawberry = config.getBool("change-strawberry");
-            changeDarkstonePeriapt = config.getBool("change-darkstone-periapt");
-            changePear = config.getBool("change-pear");
-            changeStrikeDummy = config.getBool("change-strike-dummy");
-            changeGirya = config.getBool("change-girya");
-            changeMango = config.getBool("change-mango");
-            changeOldCoin = config.getBool("change-old-coin");
-            changeCauldron = config.getBool("change-cauldron");
-            changeSnakeRing = config.getBool("change-snake-ring");
-            changeTinyChest = config.getBool("change-tiny-chest");
-            changeDeadBranch = config.getBool("change-dead-branch");
-            changeStrangeSpoon = config.getBool("change-strange-spoon");
-            changeEnchiridion = config.getBool("change-enchiridion");
-            changeBustedCrown = config.getBool("change-busted-crown");
-            changeLizardTail = config.getBool("change-lizard-tail");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     public void receivePostInitialize() {
-        UIStrings configStrings = CardCrawlGame.languagePack.getUIString(makeID("ConfigMenuText"));
-        ModPanel settingsPanel = new ModPanel();
-        ModLabeledToggleButton enableChangeCeramicFishButton = new ModLabeledToggleButton(configStrings.TEXT[0], 350.0F, 750.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeCeramicFish, settingsPanel, label -> { }, button -> {
-            changeCeramicFish = button.enabled;
-            try {
-                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
-                config.setBool("change-ceramic-fish", changeCeramicFish);
-                config.save();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        ModLabeledToggleButton enableChangeMawBankButton = new ModLabeledToggleButton(configStrings.TEXT[1], 350.0F, 700.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeMawBank, settingsPanel, label -> { }, button -> {
-            changeMawBank = button.enabled;
-            try {
-                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
-                config.setBool("change-maw-bank", changeMawBank);
-                config.save();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        ModLabeledToggleButton enableChangeStrawberryButton = new ModLabeledToggleButton(configStrings.TEXT[2], 350.0F, 650.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeStrawberry, settingsPanel, label -> { }, button -> {
-            changeStrawberry = button.enabled;
-            try {
-                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
-                config.setBool("change-strawberry", changeStrawberry);
-                config.save();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        ModLabeledToggleButton enableChangeDarkstonePeriaptButton = new ModLabeledToggleButton(configStrings.TEXT[3], 350.0F, 600.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeDarkstonePeriapt, settingsPanel, label -> { }, button -> {
-            changeDarkstonePeriapt = button.enabled;
-            try {
-                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
-                config.setBool("change-darkstone-periapt", changeDarkstonePeriapt);
-                config.save();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        ModLabeledToggleButton enableChangePearButton = new ModLabeledToggleButton(configStrings.TEXT[4], 350.0F, 550.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changePear, settingsPanel, label -> { }, button -> {
-            changePear = button.enabled;
-            try {
-                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
-                config.setBool("change-pear", changePear);
-                config.save();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        ModLabeledToggleButton enableChangeStrikeDummyButton = new ModLabeledToggleButton(configStrings.TEXT[5], 350.0F, 500.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeStrikeDummy, settingsPanel, label -> { }, button -> {
-            changeStrikeDummy = button.enabled;
-            try {
-                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
-                config.setBool("change-strike-dummy", changeStrikeDummy);
-                config.save();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        ModLabeledToggleButton enableChangeGiryaButton = new ModLabeledToggleButton(configStrings.TEXT[6], 350.0F, 450.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeGirya, settingsPanel, label -> { }, button -> {
-            changeGirya = button.enabled;
-            try {
-                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
-                config.setBool("change-girya", changeGirya);
-                config.save();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        ModLabeledToggleButton enableChangeMangoButton = new ModLabeledToggleButton(configStrings.TEXT[7], 350.0F, 400.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeMango, settingsPanel, label -> { }, button -> {
-            changeMango = button.enabled;
-            try {
-                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
-                config.setBool("change-mango", changeMango);
-                config.save();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        ModLabeledToggleButton enableChangeOldCoinButton = new ModLabeledToggleButton(configStrings.TEXT[8], 350.0F, 350.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeOldCoin, settingsPanel, label -> { }, button -> {
-            changeOldCoin = button.enabled;
-            try {
-                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
-                config.setBool("change-old-coin", changeOldCoin);
-                config.save();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        ModLabeledToggleButton enableChangeCauldronButton = new ModLabeledToggleButton(configStrings.TEXT[9], 350.0F, 300.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeCauldron, settingsPanel, label -> { }, button -> {
-            changeCauldron = button.enabled;
-            try {
-                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
-                config.setBool("change-cauldron", changeCauldron);
-                config.save();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        ModLabeledToggleButton enableChangeSnakeRingButton = new ModLabeledToggleButton(configStrings.TEXT[10], 300.0F, 250.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeSnakeRing, settingsPanel, label -> { }, button -> {
-            changeSnakeRing = button.enabled;
-            try {
-                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
-                config.setBool("change-snake-ring", changeSnakeRing);
-                config.save();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        ModLabeledToggleButton enableChangeTinyChestButton = new ModLabeledToggleButton(configStrings.TEXT[11], 300.0F, 200.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeTinyChest, settingsPanel, label -> { }, button -> {
-            changeTinyChest = button.enabled;
-            try {
-                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
-                config.setBool("change-tiny-chest", changeTinyChest);
-                config.save();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        ModLabeledToggleButton enableChangeDeadBranchButton = new ModLabeledToggleButton(configStrings.TEXT[12], 300.0F, 150.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeDeadBranch, settingsPanel, label -> { }, button -> {
-            changeDeadBranch = button.enabled;
-            try {
-                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
-                config.setBool("change-dead-branch", changeDeadBranch);
-                config.save();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        ModLabeledToggleButton enableChangeStrangeSpoonButton = new ModLabeledToggleButton(configStrings.TEXT[13], 300.0F, 100.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeStrangeSpoon, settingsPanel, label -> { }, button -> {
-            changeStrangeSpoon = button.enabled;
-            try {
-                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
-                config.setBool("change-strange-spoon", changeStrangeSpoon);
-                config.save();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        ModLabeledToggleButton enableChangeEnchiridionButton = new ModLabeledToggleButton(configStrings.TEXT[14], 300.0F, 50.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeEnchiridion, settingsPanel, label -> { }, button -> {
-            changeEnchiridion = button.enabled;
-            try {
-                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
-                config.setBool("change-enchiridion", changeEnchiridion);
-                config.save();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        ModLabeledToggleButton enableChangeBustedCrownButton = new ModLabeledToggleButton(configStrings.TEXT[15], 300.0F, 0.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeBustedCrown, settingsPanel, label -> { }, button -> {
-            changeBustedCrown = button.enabled;
-            try {
-                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
-                config.setBool("change-busted-crown", changeBustedCrown);
-                config.save();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        ModLabeledToggleButton enableChangeLizardTailButton = new ModLabeledToggleButton(configStrings.TEXT[15], 300.0F, 0.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeLizardTail, settingsPanel, label -> { }, button -> {
-            changeLizardTail = button.enabled;
-            try {
-                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
-                config.setBool("change-lizard-tail", changeLizardTail);
-                config.save();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        loadConfig();
 
-        settingsPanel.addUIElement(enableChangeCeramicFishButton);
-        settingsPanel.addUIElement(enableChangeMawBankButton);
-        settingsPanel.addUIElement(enableChangeStrawberryButton);
-        settingsPanel.addUIElement(enableChangeDarkstonePeriaptButton);
-        settingsPanel.addUIElement(enableChangePearButton);
-        settingsPanel.addUIElement(enableChangeStrikeDummyButton);
-        settingsPanel.addUIElement(enableChangeGiryaButton);
-        settingsPanel.addUIElement(enableChangeMangoButton);
-        settingsPanel.addUIElement(enableChangeOldCoinButton);
-        settingsPanel.addUIElement(enableChangeCauldronButton);
-        settingsPanel.addUIElement(enableChangeSnakeRingButton);
-        settingsPanel.addUIElement(enableChangeTinyChestButton);
-        settingsPanel.addUIElement(enableChangeDeadBranchButton);
-        settingsPanel.addUIElement(enableChangeStrangeSpoonButton);
-        settingsPanel.addUIElement(enableChangeEnchiridionButton);
-        settingsPanel.addUIElement(enableChangeBustedCrownButton);
-        settingsPanel.addUIElement(enableChangeLizardTailButton);
+        ModPanel configPanel = new ModPanel();
+        String labelText = getUIStrings("DisabledChanges").TEXT[0];
+        ModLabel disabledLabel = new ModLabel(labelText, 400.0F, 730.0F, configPanel, label -> {});
+        configPanel.addUIElement(disabledLabel);
+        String[] relicChoices = {
+                CeramicFish.ID, MawBank.ID, Strawberry.ID, DarkstonePeriapt.ID, Pear.ID, StrikeDummy.ID, Girya.ID, Mango.ID, OldCoin.ID, Cauldron.ID, SnakeRing.ID, TinyChest.ID, DeadBranch.ID,
+                StrangeSpoon.ID, Enchiridion.ID, BustedCrown.ID, LizardTail.ID
+        };
+        for (int i = 0; i < relicChoices.length; i++) {
+            String relicID = relicChoices[i];
+            ModLabeledToggleButton disableButton = new ModLabeledToggleButton(CardCrawlGame.languagePack.getRelicStrings(relicID).NAME, xPos(i), yPos(i), Settings.CREAM_COLOR, FontHelper.charDescFont, isDisabled(relicID), configPanel, label -> { }, button -> {
+                if (button.enabled) {
+                    disabled.add(relicID);
+                } else {
+                    disabled.remove(relicID);
+                }
+                saveConfig();
+            });
+            configPanel.addUIElement(disableButton);
+        }
 
         Texture badgeTexture = TextureLoader.getTexture(resourcePath("badge.png"));
-        BaseMod.registerModBadge(badgeTexture, info.Name, GeneralUtils.arrToString(info.Authors), info.Description, settingsPanel);
+        BaseMod.registerModBadge(badgeTexture, info.Name, GeneralUtils.arrToString(info.Authors), info.Description, configPanel);
     }
 
     /*----------Localization----------*/

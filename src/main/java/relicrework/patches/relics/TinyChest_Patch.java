@@ -5,6 +5,7 @@ import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.localization.RelicStrings;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+import com.megacrit.cardcrawl.relics.CeramicFish;
 import com.megacrit.cardcrawl.relics.TinyChest;
 import com.megacrit.cardcrawl.rewards.chests.AbstractChest;
 import com.megacrit.cardcrawl.rewards.chests.LargeChest;
@@ -31,7 +32,7 @@ public class TinyChest_Patch {
     public static class TinyChest_ReplaceGetUpdatedDescription {
         @SpirePrefixPatch
         public static SpireReturn<String> patch(TinyChest __instance) {
-            return RelicRework.changeTinyChest ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
+            return RelicRework.isEnabled(TinyChest.ID) ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
         }
     }
 
@@ -39,7 +40,7 @@ public class TinyChest_Patch {
     public static class EventHelper_UndoTinyChestCounterIncrement {
         @SpirePostfixPatch
         public static void patch(Random eventRng) {
-            if (AbstractDungeon.player.hasRelic(TinyChest.ID) && RelicRework.changeTinyChest) {
+            if (AbstractDungeon.player.hasRelic(TinyChest.ID) && RelicRework.isEnabled(TinyChest.ID)) {
                 AbstractRelic tinyChestRelic = AbstractDungeon.player.getRelic(TinyChest.ID);
                 tinyChestRelic.counter = -1;
             }
@@ -50,7 +51,7 @@ public class TinyChest_Patch {
     public static class AbstractDungeon_ReplaceGetRandomChest {
         @SpirePrefixPatch
         public static SpireReturn<AbstractChest> patch() {
-            if (!RelicRework.changeTinyChest || !AbstractDungeon.player.hasRelic("Tiny Chest")) {
+            if (!RelicRework.isEnabled(TinyChest.ID) || !AbstractDungeon.player.hasRelic("Tiny Chest")) {
                 return SpireReturn.Continue();
             }
 

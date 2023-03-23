@@ -24,7 +24,7 @@ public class CeramicFish_Patch {
     public static class CeramicFish_RemoveOnObtainCard {
         @SpirePrefixPatch
         public static SpireReturn<Void> patch(CeramicFish __instance, AbstractCard card) {
-            return RelicRework.changeCeramicFish ? SpireReturn.Return() : SpireReturn.Continue();
+            return RelicRework.isEnabled(CeramicFish.ID) ? SpireReturn.Return() : SpireReturn.Continue();
         }
     }
 
@@ -32,7 +32,7 @@ public class CeramicFish_Patch {
     public static class CeramicFish_ReplaceGetUpdatedDescription {
         @SpirePrefixPatch
         public static SpireReturn<String> patch(CeramicFish __instance) {
-            return RelicRework.changeCeramicFish ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
+            return RelicRework.isEnabled(CeramicFish.ID) ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
         }
     }
 
@@ -40,7 +40,7 @@ public class CeramicFish_Patch {
     public static class ShopScreen_ApplyDiscount {
         @SpirePostfixPatch
         public static void patch(ShopScreen __instance, ArrayList<AbstractCard> coloredCards, ArrayList<AbstractCard> colorlessCards) {
-            if (RelicRework.changeCeramicFish && AbstractDungeon.player.hasRelic(CeramicFish.ID)) {
+            if (RelicRework.isEnabled(CeramicFish.ID) && AbstractDungeon.player.hasRelic(CeramicFish.ID)) {
                 // Why is this even a private field :(
                 ArrayList<StoreRelic> relics =  ReflectionHacks.getPrivate(__instance, __instance.getClass(), "relics");
                 for (StoreRelic relic : relics) {

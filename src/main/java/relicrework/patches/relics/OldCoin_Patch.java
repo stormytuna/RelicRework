@@ -12,10 +12,9 @@ import javassist.*;
 import relicrework.RelicRework;
 
 public class OldCoin_Patch {
-    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(OldCoin.ID);
     private static final String ON_GAIN_GOLD_METHOD_BODY = "" +
             "{" +
-            "   if (relicrework.RelicRework.changeOldCoin) {" +
+            "   if (relicrework.RelicRework.isEnabled(\"Old Coin\")) {" +
             "       this.flash();" +
             "       com.megacrit.cardcrawl.characters.AbstractPlayer player = com.megacrit.cardcrawl.dungeons.AbstractDungeon.player;" +
             "       this.addToBot(new com.megacrit.cardcrawl.actions.common.RelicAboveCreatureAction(player, this));" +
@@ -39,21 +38,13 @@ public class OldCoin_Patch {
     public static class OldCoin_ReplaceOnEquip {
         @SpirePrefixPatch
         public static SpireReturn<Void> patch(OldCoin __instance) {
-            if (!RelicRework.changeOldCoin) {
+            if (!RelicRework.isEnabled(OldCoin.ID)) {
                 return SpireReturn.Continue();
             }
 
             CardCrawlGame.sound.play("GOLD_GAIN");
             AbstractDungeon.player.gainGold(200);
             return SpireReturn.Return();
-        }
-    }
-
-    @SpirePatch(clz = OldCoin.class, method = "getUpdatedDescription")
-    public static class OldCoin_ReplaceGetUpdatedDescription {
-        @SpirePrefixPatch
-        public static SpireReturn<String> patch(OldCoin __instance) {
-            return RelicRework.changeOldCoin ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
         }
     }
 }

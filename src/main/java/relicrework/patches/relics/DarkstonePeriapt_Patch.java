@@ -7,16 +7,18 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireReturn;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.localization.RelicStrings;
+import com.megacrit.cardcrawl.relics.CeramicFish;
 import com.megacrit.cardcrawl.relics.DarkstonePeriapt;
 import javassist.*;
 import relicrework.RelicRework;
 
 public class DarkstonePeriapt_Patch {
     private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(DarkstonePeriapt.ID);
+
     private static final String ON_CARD_DRAW_METHOD_BODY = "" +
             "{" +
             "   com.megacrit.cardcrawl.characters.AbstractPlayer player = com.megacrit.cardcrawl.dungeons.AbstractDungeon.player;" +
-            "   if (relicrework.RelicRework.changeDarkstonePeriapt && $1.type == com.megacrit.cardcrawl.cards.AbstractCard.CardType.CURSE && !player.hasPower(\"No Draw\")) {" +
+            "   if (relicrework.RelicRework.isEnabled(\"Darkstone Periapt\") && $1.type == com.megacrit.cardcrawl.cards.AbstractCard.CardType.CURSE && !player.hasPower(\"No Draw\")) {" +
             "       this.flash();" +
             "       this.addToBot(new com.megacrit.cardcrawl.actions.common.DrawCardAction(player, 1));" +
             "   }" +
@@ -26,7 +28,7 @@ public class DarkstonePeriapt_Patch {
     public static class DarkstonePeriapt_RemoveOnObtainCard {
         @SpirePrefixPatch
         public static SpireReturn<Void> patch(DarkstonePeriapt __instance) {
-            return RelicRework.changeDarkstonePeriapt ? SpireReturn.Return() : SpireReturn.Continue();
+            return RelicRework.isEnabled(DarkstonePeriapt.ID) ? SpireReturn.Return() : SpireReturn.Continue();
         }
     }
 
@@ -47,7 +49,7 @@ public class DarkstonePeriapt_Patch {
     public static class DarkstonePeriapt_ReplaceGetUpdatedDescription {
         @SpirePrefixPatch
         public static SpireReturn<String> patch(DarkstonePeriapt __instance) {
-            return RelicRework.changeDarkstonePeriapt ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
+            return RelicRework.isEnabled(DarkstonePeriapt.ID) ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
         }
     }
 }

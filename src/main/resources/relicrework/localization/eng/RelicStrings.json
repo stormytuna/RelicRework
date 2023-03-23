@@ -10,7 +10,9 @@
     "NAME": "Maw Bank",
     "FLAVOR": "Surprisingly popular, despite maw attacks being a regular occurrence.",
     "DESCRIPTIONS": [
-      "Whenever you climb a floor, store #b12 #yGold. Right click to smash open and gain all #yGold inside. No longer works once smashed open."
+      "Whenever you climb a floor, store #b",
+      " #yGold. Right click to smash open and gain all #yGold inside. No longer works once smashed open.",
+      "This relic has been used up."
     ]
   },
   "${modID}:Strawberry": {
@@ -34,11 +36,12 @@
       "Upon pickup, raise your Max HP by #b10. Whenever you heal, heal an additional #b1 HP."
     ]
   },
-  "${modID}:Strike Dummy": {
+  "${modID}:StrikeDummy": {
     "NAME": "Strike Dummy",
     "FLAVOR": "It's beat up.",
     "DESCRIPTIONS": [
-      "Basic and Common Attacks deal #b3 additional damage."
+      "Basic and Common Attacks deal #b",
+      " additional damage."
     ]
   },
   "${modID}:Girya": {
@@ -74,7 +77,7 @@
     "NAME": "Ring of the Snake",
     "FLAVOR": "Made from a fossilized snake. Represents great skill as a huntress.",
     "DESCRIPTIONS": [
-      "At the start of each combat, draw #b1 additional card and gain #b1 energy."
+      "At the start of each combat, draw #b1 additional card and gain [E] ."
     ]
   },
   "${modID}:Tiny Chest": {
@@ -102,14 +105,15 @@
     "NAME": "Enchiridion",
     "FLAVOR": "The legendary journal of an ancient lich.",
     "DESCRIPTIONS": [
-      "At the start of each combat, choose a #yPower card to your hand. It costs #b0 until the end of turn."
+      "At the start of each combat, choose a #yPower card to add to your hand. It costs #b0 until the end of turn."
     ]
   },
   "${modID}:Busted Crown": {
     "NAME": "Busted Crown",
     "FLAVOR": "The Champ's crown... or a pale imitation?",
     "DESCRIPTIONS": [
-      "Gain [E] at the start of each turn. Future card rewards from regular fights have #b2 less cards to choose from."
+      "Future card rewards from regular fights have #b2 less cards to choose from.",
+      "Gain [E] at the start of each turn. "
     ]
   },
   "${modID}:Lizard Tail": {

@@ -19,5 +19,10 @@
       "Busted Crown (Gain 1 Energy at the start of each turn. Future card rewards from regular fights have 2 less cards to choose from.)",
       "Lizard Tail (Whenever you play your sixth card each turn, gain 1 Energy.)"
     ]
+  },
+  "${modID}:DisabledChanges": {
+    "TEXT": [
+      "Disable changes for selected relics"
+    ]
   }
 }

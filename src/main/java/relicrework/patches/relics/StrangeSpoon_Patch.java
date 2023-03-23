@@ -23,8 +23,6 @@ import relicrework.RelicRework;
 import java.util.ArrayList;
 
 public class StrangeSpoon_Patch {
-    private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(StrangeSpoon.ID);
-
     @SpirePatch(clz = StrangeSpoon.class, method = SpirePatch.CONSTRUCTOR)
     public static class StrangeSpoon_PostfixCtor {
         @SpirePostfixPatch
@@ -33,20 +31,12 @@ public class StrangeSpoon_Patch {
         }
     }
 
-    @SpirePatch(clz = StrangeSpoon.class, method = "getUpdatedDescription")
-    public static class StrangeSpoon_ReplaceGetUpdatedDescription {
-        @SpirePrefixPatch
-        public static SpireReturn<String> patch(StrangeSpoon __instance) {
-            return RelicRework.changeStrangeSpoon ? SpireReturn.Return(RELIC_STRINGS.DESCRIPTIONS[0]) : SpireReturn.Continue();
-        }
-    }
-
     @SpirePatch(clz = UseCardAction.class, method = "update")
     public static class UseCardAction_RemoveStrangeSpoonEffect {
         @SpireInsertPatch(locator = Locator.class, localvars = { "spoonProc" })
         public static void patch(UseCardAction __instance, @ByRef boolean[] spoonProc) {
             AbstractPlayer player = AbstractDungeon.player;
-            if (RelicRework.changeStrangeSpoon && player.hasRelic("Strange Spoon")) {
+            if (RelicRework.isEnabled(StrangeSpoon.ID) && player.hasRelic("Strange Spoon")) {
                 AbstractRelic strangeSpoon = player.getRelic("Strange Spoon");
                 // We should discard this card
                 if (strangeSpoon.counter == 1) {
