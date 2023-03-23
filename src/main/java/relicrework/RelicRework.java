@@ -54,6 +54,7 @@ public class RelicRework implements
     public static boolean changeDeadBranch = false;
     public static boolean changeStrangeSpoon = false;
     public static boolean changeEnchiridion = false;
+    public static boolean changeBustedCrown = false;
 
     public static String makeID(String id) {
         return modID + ":" + id;
@@ -83,6 +84,7 @@ public class RelicRework implements
         defaultSettings.setProperty("change-dead-branch", Boolean.toString(true));
         defaultSettings.setProperty("change-strange-spoon", Boolean.toString(true));
         defaultSettings.setProperty("change-enchiridion", Boolean.toString(true));
+        defaultSettings.setProperty("change-busted-crown", Boolean.toString(true));
         try {
             SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
             config.load();
@@ -102,6 +104,7 @@ public class RelicRework implements
             changeDeadBranch = config.getBool("change-dead-branch");
             changeStrangeSpoon = config.getBool("change-strange-spoon");
             changeEnchiridion = config.getBool("change-enchiridion");
+            changeBustedCrown = config.getBool("change-busted-crown");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -261,6 +264,16 @@ public class RelicRework implements
                 throw new RuntimeException(e);
             }
         });
+        ModLabeledToggleButton enableChangeBustedCrownButton = new ModLabeledToggleButton(configStrings.TEXT[15], 300.0F, 0.0F, Settings.CREAM_COLOR, FontHelper.charDescFont, changeBustedCrown, settingsPanel, label -> { }, button -> {
+            changeBustedCrown = button.enabled;
+            try {
+                SpireConfig config = new SpireConfig("relicrework", "RelicReworkConfig", defaultSettings);
+                config.setBool("change-busted-crown", changeBustedCrown);
+                config.save();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         settingsPanel.addUIElement(enableChangeCeramicFishButton);
         settingsPanel.addUIElement(enableChangeMawBankButton);
@@ -277,6 +290,7 @@ public class RelicRework implements
         settingsPanel.addUIElement(enableChangeDeadBranchButton);
         settingsPanel.addUIElement(enableChangeStrangeSpoonButton);
         settingsPanel.addUIElement(enableChangeEnchiridionButton);
+        settingsPanel.addUIElement(enableChangeBustedCrownButton);
 
         Texture badgeTexture = TextureLoader.getTexture(resourcePath("badge.png"));
         BaseMod.registerModBadge(badgeTexture, info.Name, GeneralUtils.arrToString(info.Authors), info.Description, settingsPanel);

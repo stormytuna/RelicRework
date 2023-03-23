@@ -104,5 +104,12 @@
     "DESCRIPTIONS": [
       "At the start of each combat, choose a #yPower card to your hand. It costs #b0 until the end of turn."
     ]
+  },
+  "${modID}:Busted Crown": {
+    "NAME": "Busted Crown",
+    "FLAVOR": "The Champ's crown... or a pale imitation?",
+    "DESCRIPTIONS": [
+      "Gain [E] at the start of each turn. Future card rewards from regular fights have #b2 less cards to choose from."
+    ]
   }
 }
