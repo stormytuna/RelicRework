@@ -16,7 +16,8 @@
       "Dead Branch (Whenever you Exhaust a card, add a random Exhausting card to your hand.)",
       "Strange Spoon (Every other Exhaust card you play is discarded instead.)",
       "Enchiridion (At the start of each combat, choose a Power card to your hand. It costs 0 until the end of turn.)",
-      "Busted Crown (Gain 1 Energy at the start of each turn. Future card rewards from regular fights have 2 less cards to choose from.)"
+      "Busted Crown (Gain 1 Energy at the start of each turn. Future card rewards from regular fights have 2 less cards to choose from.)",
+      "Lizard Tail (Whenever you play your sixth card each turn, gain 1 Energy.)"
     ]
   }
 }

@@ -111,5 +111,12 @@
     "DESCRIPTIONS": [
       "Gain [E] at the start of each turn. Future card rewards from regular fights have #b2 less cards to choose from."
     ]
+  },
+  "${modID}:Lizard Tail": {
+    "NAME": "Lizard Tail",
+    "FLAVOR": "A fake tail to trick enemies during combat.",
+    "DESCRIPTIONS": [
+      "Whenever you play your sixth card each turn, gain [E] ."
+    ]
   }
 }
