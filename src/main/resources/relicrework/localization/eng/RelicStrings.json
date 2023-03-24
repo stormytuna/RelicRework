@@ -130,5 +130,12 @@
       "The first card you play each combat is played twice.",
       ""
     ]
+  },
+  "${modID}:WingedGreaves": {
+    "NAME": "Wing Boots",
+    "FLAVOR": "Stylish.",
+    "DESCRIPTIONS": [
+      "At the end of your first #b3 turns, gain #b1 #yDexterity."
+    ]
   }
 }
