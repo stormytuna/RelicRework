@@ -122,5 +122,13 @@
     "DESCRIPTIONS": [
       "Whenever you play your sixth card each turn, gain [E] ."
     ]
+  },
+  "${modID}:DollysMirror": {
+    "NAME": "Dolly's Mirror",
+    "FLAVOR": "\"I look funny in this.\"",
+    "DESCRIPTIONS": [
+      "The first card you play each combat is played twice.",
+      ""
+    ]
   }
 }
