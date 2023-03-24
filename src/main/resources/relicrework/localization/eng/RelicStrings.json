@@ -62,7 +62,7 @@
     "NAME": "Old Coin",
     "FLAVOR": "Unique coins are highly valued by Merchants for their historical value and rare metallic composition.",
     "DESCRIPTIONS": [
-      "Gain #b200 #yGold. Whenever you gain #yGold, gain an additional #b8."
+      "Gain #b200 #yGold. Whenever you gain #yGold, gain an additional #b5."
     ]
   },
   "${modID}:Cauldron": {

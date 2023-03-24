@@ -17,8 +17,8 @@ public class OldCoin_Patch {
             "       this.flash();" +
             "       com.megacrit.cardcrawl.characters.AbstractPlayer player = com.megacrit.cardcrawl.dungeons.AbstractDungeon.player;" +
             "       this.addToBot(new com.megacrit.cardcrawl.actions.common.RelicAboveCreatureAction(player, this));" +
-            "       com.megacrit.cardcrawl.core.CardCrawlGame.goldGained += 8;" +
-            "       player.gold += 8;" +
+            "       com.megacrit.cardcrawl.core.CardCrawlGame.goldGained += 5;" +
+            "       player.gold += 5;" +
             "   }" +
             "}";
 
