@@ -137,5 +137,13 @@
     "DESCRIPTIONS": [
       "At the end of your first #b3 turns, gain #b1 #yDexterity."
     ]
+  },
+  "${modID}:Orrery": {
+    "NAME": "Orrery",
+    "FLAVOR": "\"Once you understand the universe...\" - Zoroth",
+    "DESCRIPTIONS": [
+      "Choose and add #b3 cards to your deck. Card rewards have a higher chance to contain #yUpgraded cards.",
+      "Knowledge!"
+    ]
   }
 }
