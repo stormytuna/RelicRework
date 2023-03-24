@@ -69,7 +69,7 @@
     "NAME": "Cauldron",
     "FLAVOR": "The Merchant is actually a rather skilled potion brewer. Buy 2 get 1 free.",
     "DESCRIPTIONS": [
-      "Upon pickup, gain #b1 potion slot and brew #b1 potion of each rarity.",
+      "Upon pickup brew #b1 potion of each rarity. Potions you find are higher rarity.",
       "Blup blip bloop...!"
     ]
   },
