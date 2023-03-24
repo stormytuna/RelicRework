@@ -1,25 +1,4 @@
 {
-  "${modID}:ConfigMenuText": {
-    "TEXT": [
-      "Ceramic Fish (Cards and relics at the shop cost 20 less Gold.)",
-      "Maw Bank (Whenever you climb a floor, store 12 Gold. Right click to smash open and gain all Gold inside.)",
-      "Strawberry (Upon pickup, raise your Max HP by 7. At the end of combat, heal 1 HP.)",
-      "Darkstone Periapt (Whenever you draw a Curse, draw 1 card.)",
-      "Pear (Upon pickup, raise your Max HP by #b10. Whenever you heal, heal an additional #b1 HP.)",
-      "Strike Dummy (Basic and Common Attacks deal 3 additional damage.)",
-      "Girya (At the end of your first 3 turns, gain 1 Strength)",
-      "Mango (Upon pickup, raise your Max HP by 14. Whenever you kill an enemy, heal 2 HP.)",
-      "Old Coin (Gain 200 Gold. Whenever you gain Gold, gain an additional 8.)",
-      "Cauldron (Upon pickup, gain 1 potion slot and brew 1 potion of each rarity.)",
-      "Ring of the Snake (At the start of each combat, draw 1 additional card and gain 1 energy.)",
-      "Tiny Chest (Chests in Treasure rooms are more likely to be larger.)",
-      "Dead Branch (Whenever you Exhaust a card, add a random Exhausting card to your hand.)",
-      "Strange Spoon (Every other Exhaust card you play is discarded instead.)",
-      "Enchiridion (At the start of each combat, choose a Power card to your hand. It costs 0 until the end of turn.)",
-      "Busted Crown (Gain 1 Energy at the start of each turn. Future card rewards from regular fights have 2 less cards to choose from.)",
-      "Lizard Tail (Whenever you play your sixth card each turn, gain 1 Energy.)"
-    ]
-  },
   "${modID}:DisabledChanges": {
     "TEXT": [
       "Disable changes for selected relics"
