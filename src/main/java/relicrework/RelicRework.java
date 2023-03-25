@@ -108,7 +108,8 @@ public class RelicRework implements
         configPanel.addUIElement(disabledLabel);
         String[] relicChoices = {
                 CeramicFish.ID, MawBank.ID, Strawberry.ID, DarkstonePeriapt.ID, Pear.ID, StrikeDummy.ID, Girya.ID, Mango.ID, OldCoin.ID, Cauldron.ID, SnakeRing.ID, TinyChest.ID, DeadBranch.ID,
-                StrangeSpoon.ID, Enchiridion.ID, BustedCrown.ID, LizardTail.ID, DollysMirror.ID, WingBoots.ID, Orrery.ID, Astrolabe.ID, Ectoplasm.ID, RunicPyramid.ID, VelvetChoker.ID, BlackBlood.ID
+                StrangeSpoon.ID, Enchiridion.ID, BustedCrown.ID, LizardTail.ID, DollysMirror.ID, WingBoots.ID, Orrery.ID, Astrolabe.ID, Ectoplasm.ID, RunicPyramid.ID, VelvetChoker.ID, BlackBlood.ID,
+                MarkOfPain.ID
         };
         for (int i = 0; i < relicChoices.length; i++) {
             String relicID = relicChoices[i];

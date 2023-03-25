@@ -182,5 +182,12 @@
     "DESCRIPTIONS": [
       "Replaces #rBurning #rBlood. Whenever you kill an enemy, heal #b4 HP."
     ]
+  },
+  "${modID}:Mark of Pain": {
+    "NAME": "Mark of Pain",
+    "FLAVOR": "This brand was used by the northern tribes to signify warriors who had mastered pain in battle.",
+    "DESCRIPTIONS": [
+      "Gain [E] at the start of each turn. Start each combat with #b3 #rWounds in your discard pile."
+    ]
   }
 }
