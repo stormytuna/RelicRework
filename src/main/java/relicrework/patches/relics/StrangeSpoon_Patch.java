@@ -1,6 +1,7 @@
 package relicrework.patches.relics;
 
 import basemod.ReflectionHacks;
+import com.evacipated.cardcrawl.mod.stslib.actions.common.MoveCardsAction;
 import com.evacipated.cardcrawl.modthespire.lib.*;
 import com.evacipated.cardcrawl.modthespire.patcher.PatchingException;
 import com.megacrit.cardcrawl.actions.common.RelicAboveCreatureAction;
@@ -31,20 +32,22 @@ public class StrangeSpoon_Patch {
             AbstractPlayer player = AbstractDungeon.player;
             if (RelicRework.isEnabled(StrangeSpoon.ID) && player.hasRelic("Strange Spoon")) {
                 AbstractRelic strangeSpoon = player.getRelic("Strange Spoon");
-                // We should discard this card
-                if (strangeSpoon.counter == 1) {
-                    ReflectionHacks.setPrivate(strangeSpoon, strangeSpoon.getClass(), "pulse", false);
+                // We should let our player move a card to their discard pile
+                if (strangeSpoon.counter == 2) {
+                    // ReflectionHacks.setPrivate(strangeSpoon, strangeSpoon.getClass(), "pulse", false);
                     AbstractDungeon.actionManager.addToBottom(new RelicAboveCreatureAction(player, strangeSpoon));
                     strangeSpoon.flash();
 
+                    AbstractDungeon.actionManager.addToBottom(new MoveCardsAction(player.discardPile, player.exhaustPile));
+
                     strangeSpoon.counter = 0;
-                    spoonProc[0] = true;
+                    spoonProc[0] = false;
                     return;
                 }
 
                 // We should increment, and not discard this card
                 strangeSpoon.beginPulse();
-                ReflectionHacks.setPrivate(strangeSpoon, strangeSpoon.getClass(), "pulse", true);
+                // ReflectionHacks.setPrivate(strangeSpoon, strangeSpoon.getClass(), "pulse", true);
                 spoonProc[0] = false;
 
                 strangeSpoon.counter++;

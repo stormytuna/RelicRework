@@ -98,7 +98,7 @@
     "NAME": "Strange Spoon",
     "FLAVOR": "Staring at the spoon, it appears to bend and twist around before your eyes.",
     "DESCRIPTIONS": [
-      "Every other #yExhaust card you play is discarded instead."
+      "Whenever you play #b3 cards which #yExhaust when played, choose an #yExhausted card to put into your discard pile."
     ]
   },
   "${modID}:Enchiridion": {
