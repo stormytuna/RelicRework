@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.helpers.FontHelper;
+import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.relics.*;
 import relicrework.util.GeneralUtils;
 import relicrework.util.TextureLoader;
@@ -107,7 +108,7 @@ public class RelicRework implements
         configPanel.addUIElement(disabledLabel);
         String[] relicChoices = {
                 CeramicFish.ID, MawBank.ID, Strawberry.ID, DarkstonePeriapt.ID, Pear.ID, StrikeDummy.ID, Girya.ID, Mango.ID, OldCoin.ID, Cauldron.ID, SnakeRing.ID, TinyChest.ID, DeadBranch.ID,
-                StrangeSpoon.ID, Enchiridion.ID, BustedCrown.ID, LizardTail.ID, DollysMirror.ID, WingBoots.ID, Orrery.ID
+                StrangeSpoon.ID, Enchiridion.ID, BustedCrown.ID, LizardTail.ID, DollysMirror.ID, WingBoots.ID, Orrery.ID, Astrolabe.ID
 
         };
         for (int i = 0; i < relicChoices.length; i++) {

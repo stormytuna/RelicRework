@@ -3,5 +3,12 @@
     "TEXT": [
       "Disable changes for selected relics"
     ]
+  },
+  "${modID}:AstrolabeTransformOption": {
+    "TEXT": [
+      "Transform",
+      "Transform a card.",
+      "Choose a card to Transform."
+    ]
   }
 }

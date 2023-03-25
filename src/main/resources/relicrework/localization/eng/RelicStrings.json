@@ -145,5 +145,13 @@
       "Choose and add #b3 cards to your deck. Card rewards have a higher chance to contain #yUpgraded cards.",
       "Knowledge!"
     ]
+  },
+  "${modID}:Astrolabe": {
+    "NAME": "Astrolabe",
+    "FLAVOR": "A tool to glean invaluable knowledge from the stars.",
+    "DESCRIPTIONS": [
+      "Upon pickup, choose and #yTransform #b3 cards, then #yUpgrade them. You may #yTransform a card at Rest Sites.",
+      "Choose 3 cards for "
+    ]
   }
 }
