@@ -153,5 +153,13 @@
       "Upon pickup, choose and #yTransform #b3 cards, then #yUpgrade them. You may #yTransform a card at Rest Sites.",
       "Choose 3 cards for "
     ]
+  },
+  "${modID}:Ectoplasm": {
+    "NAME": "Ectoplasm",
+    "FLAVOR": "This blob of slime and energy seems to pulse with life.",
+    "DESCRIPTIONS": [
+      "Shop prices are increased by 50%.",
+      "Gain [E] at the start of your turn. "
+    ]
   }
 }
