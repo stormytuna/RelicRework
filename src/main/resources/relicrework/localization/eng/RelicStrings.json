@@ -168,5 +168,15 @@
     "DESCRIPTIONS": [
       "At the end of your turn, #yRetain up to #b3 cards."
     ]
+  },
+  "${modID}:Velvet Choker": {
+    "NAME": "Velvet Choker",
+    "FLAVOR": "\"Immense power, but too limited.\" - Kublai the Great",
+    "DESCRIPTIONS": [
+      "Gain [E] at the start of each turn. You cannot have more than max [E] .",
+      "",
+      "",
+      ""
+    ]
   }
 }
