@@ -189,5 +189,12 @@
     "DESCRIPTIONS": [
       "Gain [E] at the start of each turn. Start each combat with #b3 #rWounds in your discard pile."
     ]
+  },
+  "${modID}:FrozenCore": {
+    "NAME": "Frozen Core",
+    "FLAVOR": "The crack in your core has been filled with a pulsating cold energy.",
+    "DESCRIPTIONS": [
+      "Replaces #bCracked #bCore. At the start of your turn, #yChannel #b1 #yFrost."
+    ]
   }
 }
