@@ -173,10 +173,14 @@
     "NAME": "Velvet Choker",
     "FLAVOR": "\"Immense power, but too limited.\" - Kublai the Great",
     "DESCRIPTIONS": [
-      "Gain [E] at the start of each turn. You cannot have more than max [E] .",
-      "",
-      "",
-      ""
+      "Gain [E] at the start of each turn. You cannot have more than max [E] ."
+    ]
+  },
+  "${modID}:Black Blood": {
+    "NAME": "Black Blood",
+    "FLAVOR": "The rage grows darker.",
+    "DESCRIPTIONS": [
+      "Replaces #rBurning #rBlood. Whenever you kill an enemy, heal #b4 HP."
     ]
   }
 }
