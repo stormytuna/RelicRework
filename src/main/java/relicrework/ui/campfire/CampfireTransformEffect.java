@@ -15,10 +15,8 @@ import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.rooms.CampfireUI;
 import com.megacrit.cardcrawl.rooms.RestRoom;
 import com.megacrit.cardcrawl.vfx.AbstractGameEffect;
-import com.megacrit.cardcrawl.vfx.campfire.CampfireTokeEffect;
 import com.megacrit.cardcrawl.vfx.cardManip.ShowCardAndObtainEffect;
 import relicrework.RelicRework;
-import relicrework.ui.campfire.AstrolabeTransformOption;
 
 public class CampfireTransformEffect extends AbstractGameEffect {
     private static final UIStrings uiStrings = CardCrawlGame.languagePack.getUIString(RelicRework.makeID("AstrolabeTransformOption"));
@@ -26,7 +24,7 @@ public class CampfireTransformEffect extends AbstractGameEffect {
     private static final float DUR = 1.5F;
     private boolean openedScreen;
     private boolean selectedCard;
-    private Color screenColor;
+    private final Color screenColor;
 
     public CampfireTransformEffect() {
         this.openedScreen = false;
@@ -52,7 +50,7 @@ public class CampfireTransformEffect extends AbstractGameEffect {
 
             AbstractDungeon.gridSelectScreen.selectedCards.clear();
             this.selectedCard = true;
-            ((RestRoom)AbstractDungeon.getCurrRoom()).fadeIn();
+            ((RestRoom) AbstractDungeon.getCurrRoom()).fadeIn();
         }
 
         if (this.duration < 1.0F && !this.openedScreen) {
@@ -65,7 +63,7 @@ public class CampfireTransformEffect extends AbstractGameEffect {
             if (CampfireUI.hidden) {
                 AbstractRoom.waitTimer = 0.0F;
                 AbstractDungeon.getCurrRoom().phase = AbstractRoom.RoomPhase.COMPLETE;
-                ((RestRoom)AbstractDungeon.getCurrRoom()).cutFireSound();
+                ((RestRoom) AbstractDungeon.getCurrRoom()).cutFireSound();
             }
         }
     }
@@ -85,6 +83,7 @@ public class CampfireTransformEffect extends AbstractGameEffect {
             AbstractDungeon.gridSelectScreen.render(sb);
     }
 
-    public void dispose() {}
+    public void dispose() {
+    }
 
 }

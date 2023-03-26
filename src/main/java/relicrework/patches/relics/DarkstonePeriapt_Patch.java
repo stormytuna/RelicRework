@@ -13,7 +13,6 @@ import relicrework.RelicRework;
 
 public class DarkstonePeriapt_Patch {
     private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(DarkstonePeriapt.ID);
-
     private static final String ON_CARD_DRAW_METHOD_BODY = "" +
             "{" +
             "   com.megacrit.cardcrawl.characters.AbstractPlayer player = com.megacrit.cardcrawl.dungeons.AbstractDungeon.player;" +
@@ -23,24 +22,24 @@ public class DarkstonePeriapt_Patch {
             "   }" +
             "}";
 
+    @SpirePatch(clz = DarkstonePeriapt.class, method = SpirePatch.CONSTRUCTOR)
+    public static class DarkstonePeriapt_AddOnCardDraw {
+        @SpireRawPatch
+        public static void raw(CtBehavior ctMethodToPatch) throws CannotCompileException, NotFoundException {
+            CtClass ctDarkstonePeriaptClass = ctMethodToPatch.getDeclaringClass();
+            ClassPool classPool = ctDarkstonePeriaptClass.getClassPool();
+            CtClass ctAbstractCardClass = classPool.get(AbstractCard.class.getName());
+
+            CtMethod onCardDraw = CtNewMethod.make(CtClass.voidType, "onCardDraw", new CtClass[]{ctAbstractCardClass}, null, ON_CARD_DRAW_METHOD_BODY, ctDarkstonePeriaptClass);
+            ctDarkstonePeriaptClass.addMethod(onCardDraw);
+        }
+    }
+
     @SpirePatch(clz = DarkstonePeriapt.class, method = "onObtainCard")
     public static class DarkstonePeriapt_RemoveOnObtainCard {
         @SpirePrefixPatch
         public static SpireReturn<Void> patch(DarkstonePeriapt __instance) {
             return RelicRework.isEnabled(DarkstonePeriapt.ID) ? SpireReturn.Return() : SpireReturn.Continue();
-        }
-    }
-
-    @SpirePatch(clz = DarkstonePeriapt.class, method = SpirePatch.CONSTRUCTOR)
-    public static class DarkstonePeriapt_AddOnCardDraw {
-        @SpireRawPatch
-        public static void raw(CtBehavior ctMethodToPatch) throws CannotCompileException, NotFoundException {
-            CtClass ctClass = ctMethodToPatch.getDeclaringClass();
-            ClassPool classPool = ctClass.getClassPool();
-            CtClass ctAbstractCard = classPool.get(AbstractCard.class.getName());
-
-            CtMethod onCardDraw = CtNewMethod.make(CtClass.voidType, "onCardDraw", new CtClass[] { ctAbstractCard }, null, ON_CARD_DRAW_METHOD_BODY, ctClass);
-            ctClass.addMethod(onCardDraw);
         }
     }
 

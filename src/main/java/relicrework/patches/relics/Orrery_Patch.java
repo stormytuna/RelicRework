@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class Orrery_Patch {
     private static final int NUM_CARDS = 2; // Opening the combat reward screen adds another card reward
-    private static final float UPGRADE_CHANCE = 0.50F;
+    private static final float UPGRADE_CHANCE = 0.30F;
 
     @SpirePatch(clz = Orrery.class, method = "onEquip")
     public static class Orrery_ReplaceOnEquip {
@@ -35,6 +35,10 @@ public class Orrery_Patch {
     public static class Orrery_UpgradeRewardCards {
         @SpirePostfixPatch
         public static ArrayList<AbstractCard> patch(ArrayList<AbstractCard> __result) {
+            if (!RelicRework.playerHasRelicThatIsEnabled(AbstractDungeon.player, Orrery.ID)) {
+                return __result;
+            }
+
             for (AbstractCard card : __result) {
                 if (AbstractDungeon.cardRng.randomBoolean(UPGRADE_CHANCE) && card.canUpgrade()) {
                     card.upgrade();

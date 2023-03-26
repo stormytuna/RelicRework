@@ -24,10 +24,10 @@ public class Pear_Patch {
     public static class Pear_AddOnPlayerHeal {
         @SpireRawPatch
         public static void raw(CtBehavior ctMethodToPatch) throws CannotCompileException {
-            CtClass ctClass = ctMethodToPatch.getDeclaringClass();
+            CtClass ctPearClass = ctMethodToPatch.getDeclaringClass();
 
-            CtMethod onPlayerHeal = CtNewMethod.make(CtClass.intType, "onPlayerHeal", new CtClass[] { CtClass.intType }, null, ON_PLAYER_HEAL_METHOD_BODY, ctClass );
-            ctClass.addMethod(onPlayerHeal);
+            CtMethod onPlayerHealMethod = CtNewMethod.make(CtClass.intType, "onPlayerHeal", new CtClass[]{CtClass.intType}, null, ON_PLAYER_HEAL_METHOD_BODY, ctPearClass);
+            ctPearClass.addMethod(onPlayerHealMethod);
         }
     }
 

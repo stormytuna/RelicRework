@@ -33,20 +33,21 @@ public class LizardTail_Patch {
             "       this.beginPulse();" +
             "   }" +
             "}";
+
     @SpirePatch(clz = LizardTail.class, method = SpirePatch.CONSTRUCTOR)
     public static class LizardTail_AddMethods {
         @SpireRawPatch
         public static void raw(CtBehavior ctMethodToPatch) throws NotFoundException, CannotCompileException {
-            CtClass ctClass = ctMethodToPatch.getDeclaringClass();
-            ClassPool classPool = ctClass.getClassPool();
-            CtClass ctAbstractCard = classPool.get(AbstractCard.class.getName());
-            CtClass ctUseCardAction = classPool.get(UseCardAction.class.getName());
+            CtClass ctLizardTailClass = ctMethodToPatch.getDeclaringClass();
+            ClassPool classPool = ctLizardTailClass.getClassPool();
+            CtClass ctAbstractCardClass = classPool.get(AbstractCard.class.getName());
+            CtClass ctUseCardActionClass = classPool.get(UseCardAction.class.getName());
 
-            CtMethod onUseCardMethod = CtNewMethod.make(CtClass.voidType, "onUseCard", new CtClass[] { ctAbstractCard, ctUseCardAction }, null, ON_USE_CARD_METHOD_BODY, ctClass);
-            ctClass.addMethod(onUseCardMethod);
+            CtMethod onUseCardMethod = CtNewMethod.make(CtClass.voidType, "onUseCard", new CtClass[]{ctAbstractCardClass, ctUseCardActionClass}, null, ON_USE_CARD_METHOD_BODY, ctLizardTailClass);
+            ctLizardTailClass.addMethod(onUseCardMethod);
 
-            CtMethod atTurnStartMethod = CtNewMethod.make(CtClass.voidType, "atTurnStart", null, null, AT_TURN_START_METHOD_BODY, ctClass);
-            ctClass.addMethod(atTurnStartMethod);
+            CtMethod atTurnStartMethod = CtNewMethod.make(CtClass.voidType, "atTurnStart", null, null, AT_TURN_START_METHOD_BODY, ctLizardTailClass);
+            ctLizardTailClass.addMethod(atTurnStartMethod);
         }
     }
 

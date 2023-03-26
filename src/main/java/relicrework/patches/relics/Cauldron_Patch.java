@@ -1,6 +1,8 @@
 package relicrework.patches.relics;
 
-import com.evacipated.cardcrawl.modthespire.lib.*;
+import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
+import com.evacipated.cardcrawl.modthespire.lib.SpirePrefixPatch;
+import com.evacipated.cardcrawl.modthespire.lib.SpireReturn;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.PotionHelper;
@@ -9,10 +11,10 @@ import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.relics.Cauldron;
 import com.megacrit.cardcrawl.rewards.RewardItem;
 import relicrework.RelicRework;
-import relicrework.util.GeneralUtils;
 
 public class Cauldron_Patch {
     private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(Cauldron.ID);
+    private static final int NUM_POTIONS = 3;
     private static final int POTION_COMMON_CHANCE = 45;
     private static final int POTION_UNCOMMON_CHANCE = 30;
 
@@ -25,9 +27,9 @@ public class Cauldron_Patch {
             }
 
             // Add potions
-            AbstractDungeon.getCurrRoom().addPotionToRewards(GeneralUtils.getRandomPotionByRarity(AbstractPotion.PotionRarity.COMMON));
-            AbstractDungeon.getCurrRoom().addPotionToRewards(GeneralUtils.getRandomPotionByRarity(AbstractPotion.PotionRarity.UNCOMMON));
-            AbstractDungeon.getCurrRoom().addPotionToRewards(GeneralUtils.getRandomPotionByRarity(AbstractPotion.PotionRarity.RARE));
+            for (int i = 0; i < NUM_POTIONS; i++) {
+                AbstractDungeon.getCurrRoom().addPotionToRewards(PotionHelper.getRandomPotion());
+            }
 
             // Open rewards screen
             AbstractDungeon.combatRewardScreen.open(RELIC_STRINGS.DESCRIPTIONS[1]);
@@ -46,20 +48,22 @@ public class Cauldron_Patch {
         }
     }
 
-    @SpirePatch(clz = AbstractDungeon.class, method = "returnRandomPotion", paramtypez = { boolean.class })
+    @SpirePatch(clz = AbstractDungeon.class, method = "returnRandomPotion", paramtypez = {boolean.class})
     public static class AbstractDungeon_ReplaceReturnRandomPotion {
         @SpirePrefixPatch
         public static SpireReturn<AbstractPotion> patch(boolean limited) {
-            if (AbstractDungeon.player.hasRelic(Cauldron.ID) && RelicRework.isEnabled(Cauldron.ID)) {
-                int roll = AbstractDungeon.potionRng.random(0, 99);
-                if (roll < PotionHelper.POTION_COMMON_CHANCE)
-                    return SpireReturn.Return(AbstractDungeon.returnRandomPotion(AbstractPotion.PotionRarity.COMMON, limited));
-                if (roll < PotionHelper.POTION_UNCOMMON_CHANCE + PotionHelper.POTION_COMMON_CHANCE)
-                    return SpireReturn.Return(AbstractDungeon.returnRandomPotion(AbstractPotion.PotionRarity.UNCOMMON, limited));
-                return SpireReturn.Return(AbstractDungeon.returnRandomPotion(AbstractPotion.PotionRarity.RARE, limited));
+            if (!RelicRework.playerHasRelicThatIsEnabled(AbstractDungeon.player, Cauldron.ID)) {
+                return SpireReturn.Continue();
             }
 
-            return SpireReturn.Continue();
+            int roll = AbstractDungeon.potionRng.random(0, 99);
+            if (roll < PotionHelper.POTION_COMMON_CHANCE) {
+                return SpireReturn.Return(AbstractDungeon.returnRandomPotion(AbstractPotion.PotionRarity.COMMON, limited));
+            }
+            if (roll < PotionHelper.POTION_UNCOMMON_CHANCE + PotionHelper.POTION_COMMON_CHANCE) {
+                return SpireReturn.Return(AbstractDungeon.returnRandomPotion(AbstractPotion.PotionRarity.UNCOMMON, limited));
+            }
+            return SpireReturn.Return(AbstractDungeon.returnRandomPotion(AbstractPotion.PotionRarity.RARE, limited));
         }
     }
 }

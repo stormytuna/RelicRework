@@ -22,16 +22,17 @@ public class Ectoplasm_Patch {
     public static class AbstractPlayer_RemoveOriginalEffect {
         @SpirePrefixPatch
         public static SpireReturn<Void> patch(AbstractPlayer __instance, int amount) {
-            if (__instance.hasRelic(Ectoplasm.ID) && RelicRework.isEnabled(Ectoplasm.ID)) {
-                CardCrawlGame.goldGained += amount;
-                __instance.gold += amount;
-                for (AbstractRelic r : __instance.relics)
-                    r.onGainGold();
-
-                return SpireReturn.Return();
+            if (!RelicRework.playerHasRelicThatIsEnabled(__instance, Ectoplasm.ID)) {
+                return SpireReturn.Continue();
             }
 
-            return SpireReturn.Continue();
+            CardCrawlGame.goldGained += amount;
+            __instance.gold += amount;
+            for (AbstractRelic r : __instance.relics) {
+                r.onGainGold();
+            }
+
+            return SpireReturn.Return();
         }
     }
 
@@ -39,9 +40,11 @@ public class Ectoplasm_Patch {
     public static class ShopScreen_ApplyPriceIncreases {
         @SpirePostfixPatch
         public static void patch(ShopScreen __instance, ArrayList<AbstractCard> coloredCards, ArrayList<AbstractCard> colorlessCards) {
-            if (RelicRework.isEnabled(Ectoplasm.ID) && AbstractDungeon.player.hasRelic(Ectoplasm.ID)) {
-                __instance.applyDiscount(SHOP_PRICE_MULTIPLIER, true);
+            if (!RelicRework.playerHasRelicThatIsEnabled(AbstractDungeon.player, Ectoplasm.ID)) {
+                return;
             }
+
+            __instance.applyDiscount(SHOP_PRICE_MULTIPLIER, true);
         }
     }
 }

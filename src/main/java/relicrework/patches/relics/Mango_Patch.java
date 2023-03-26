@@ -27,12 +27,12 @@ public class Mango_Patch {
     public static class Mango_AddOnMonsterDeath {
         @SpireRawPatch
         public static void raw(CtBehavior ctBehavior) throws NotFoundException, CannotCompileException {
-            CtClass ctClass = ctBehavior.getDeclaringClass();
-            ClassPool classPool = ctClass.getClassPool();
-            CtClass ctAbstractMonster = classPool.get(AbstractMonster.class.getName());
+            CtClass ctMangoClass = ctBehavior.getDeclaringClass();
+            ClassPool classPool = ctMangoClass.getClassPool();
+            CtClass ctAbstractMonsterClass = classPool.get(AbstractMonster.class.getName());
 
-            CtMethod onMonsterDeath = CtNewMethod.make(CtClass.voidType, "onMonsterDeath", new CtClass[] { ctAbstractMonster }, null, ON_MONSTER_DEATH_METHOD_BODY, ctClass);
-            ctClass.addMethod(onMonsterDeath);
+            CtMethod onMonsterDeathMethod = CtNewMethod.make(CtClass.voidType, "onMonsterDeath", new CtClass[]{ctAbstractMonsterClass}, null, ON_MONSTER_DEATH_METHOD_BODY, ctMangoClass);
+            ctMangoClass.addMethod(onMonsterDeathMethod);
         }
     }
 

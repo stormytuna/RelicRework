@@ -23,13 +23,13 @@ public class OldCoin_Patch {
             "}";
 
     @SpirePatch(clz = OldCoin.class, method = SpirePatch.CONSTRUCTOR)
-    public static class OldCoint_AddOnGainGold {
+    public static class OldCoin_AddOnGainGold {
         @SpireRawPatch
         public static void raw(CtBehavior ctMethodToPatch) throws CannotCompileException {
-            CtClass ctClass = ctMethodToPatch.getDeclaringClass();
+            CtClass ctOldCoinClass = ctMethodToPatch.getDeclaringClass();
 
-            CtMethod onGainGold = CtNewMethod.make(CtClass.voidType, "onGainGold", null, null, ON_GAIN_GOLD_METHOD_BODY, ctClass);
-            ctClass.addMethod(onGainGold);
+            CtMethod onGainGoldMethod = CtNewMethod.make(CtClass.voidType, "onGainGold", null, null, ON_GAIN_GOLD_METHOD_BODY, ctOldCoinClass);
+            ctOldCoinClass.addMethod(onGainGoldMethod);
         }
     }
 

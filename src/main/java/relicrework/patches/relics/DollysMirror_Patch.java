@@ -40,16 +40,16 @@ public class DollysMirror_Patch {
     public static class DollysMirror_AddMethods {
         @SpireRawPatch
         public static void raw(CtBehavior ctMethodToPatch) throws NotFoundException, CannotCompileException {
-            CtClass ctClass = ctMethodToPatch.getDeclaringClass();
-            ClassPool classPool = ctClass.getClassPool();
+            CtClass ctDollysMirrorClass = ctMethodToPatch.getDeclaringClass();
+            ClassPool classPool = ctDollysMirrorClass.getClassPool();
             CtClass ctAbstractCardClass = classPool.get(AbstractCard.class.getName());
             CtClass ctAbstractMonsterClass = classPool.get(AbstractMonster.class.getName());
 
-            CtMethod onPlayCard = CtNewMethod.make(CtClass.voidType, "onPlayCard", new CtClass[] { ctAbstractCardClass, ctAbstractMonsterClass }, null, ON_PLAY_CARD_METHOD_BODY, ctClass);
-            ctClass.addMethod(onPlayCard);
+            CtMethod onPlayCardMethod = CtNewMethod.make(CtClass.voidType, "onPlayCard", new CtClass[]{ctAbstractCardClass, ctAbstractMonsterClass}, null, ON_PLAY_CARD_METHOD_BODY, ctDollysMirrorClass);
+            ctDollysMirrorClass.addMethod(onPlayCardMethod);
 
-            CtMethod onVictory = CtNewMethod.make(CtClass.voidType, "onVictory", null, null, ON_VICTORY_METHOD_BODY, ctClass);
-            ctClass.addMethod(onVictory);
+            CtMethod onVictoryMethod = CtNewMethod.make(CtClass.voidType, "onVictory", null, null, ON_VICTORY_METHOD_BODY, ctDollysMirrorClass);
+            ctDollysMirrorClass.addMethod(onVictoryMethod);
         }
     }
 

@@ -1,6 +1,8 @@
 package relicrework.patches.relics;
 
-import com.evacipated.cardcrawl.modthespire.lib.*;
+import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
+import com.evacipated.cardcrawl.modthespire.lib.SpirePostfixPatch;
+import com.evacipated.cardcrawl.modthespire.lib.SpireRawPatch;
 import com.megacrit.cardcrawl.relics.WingBoots;
 import javassist.*;
 
@@ -37,16 +39,16 @@ public class WingBoots_Patch {
     public static class WingBoots_AddMethods {
         @SpireRawPatch
         public static void raw(CtBehavior ctMethodToPatch) throws CannotCompileException {
-            CtClass ctClass = ctMethodToPatch.getDeclaringClass();
+            CtClass ctWingBootsClass = ctMethodToPatch.getDeclaringClass();
 
-            CtMethod onPlayerEndTurnMethod = CtNewMethod.make(CtClass.voidType, "onPlayerEndTurn", null, null, ON_PLAYER_END_TURN_METHOD_BODY, ctClass);
-            ctClass.addMethod(onPlayerEndTurnMethod);
+            CtMethod onPlayerEndTurnMethod = CtNewMethod.make(CtClass.voidType, "onPlayerEndTurn", null, null, ON_PLAYER_END_TURN_METHOD_BODY, ctWingBootsClass);
+            ctWingBootsClass.addMethod(onPlayerEndTurnMethod);
 
-            CtMethod onVictoryMethod = CtNewMethod.make(CtClass.voidType, "onVictory", null, null, ON_VICTORY_METHOD_BODY, ctClass);
-            ctClass.addMethod(onVictoryMethod);
+            CtMethod onVictoryMethod = CtNewMethod.make(CtClass.voidType, "onVictory", null, null, ON_VICTORY_METHOD_BODY, ctWingBootsClass);
+            ctWingBootsClass.addMethod(onVictoryMethod);
 
-            CtMethod atBattleStartMethod = CtNewMethod.make(CtClass.voidType, "atBattleStart", null, null, AT_BATTLE_START_METHOD_BODY, ctClass);
-            ctClass.addMethod(atBattleStartMethod);
+            CtMethod atBattleStartMethod = CtNewMethod.make(CtClass.voidType, "atBattleStart", null, null, AT_BATTLE_START_METHOD_BODY, ctWingBootsClass);
+            ctWingBootsClass.addMethod(atBattleStartMethod);
         }
     }
 

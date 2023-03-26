@@ -21,10 +21,10 @@ public class FrozenCore_Patch {
     public static class FrozenCore_AddAtTurnStartMethod {
         @SpireRawPatch
         public static void raw(CtBehavior ctMethodToPatch) throws CannotCompileException {
-            CtClass ctClass = ctMethodToPatch.getDeclaringClass();
+            CtClass ctFrozenCoreClass = ctMethodToPatch.getDeclaringClass();
 
-            CtMethod ctAtTurnStartMethod = CtNewMethod.make(CtClass.voidType, "atTurnStart", null, null, AT_TURN_START_METHOD_BODY, ctClass);
-            ctClass.addMethod(ctAtTurnStartMethod);
+            CtMethod ctAtTurnStartMethod = CtNewMethod.make(CtClass.voidType, "atTurnStart", null, null, AT_TURN_START_METHOD_BODY, ctFrozenCoreClass);
+            ctFrozenCoreClass.addMethod(ctAtTurnStartMethod);
         }
     }
 

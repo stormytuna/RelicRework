@@ -1,9 +1,14 @@
 package relicrework.patches.relics;
 
-import com.evacipated.cardcrawl.modthespire.lib.*;
+import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
+import com.evacipated.cardcrawl.modthespire.lib.SpirePostfixPatch;
+import com.evacipated.cardcrawl.modthespire.lib.SpirePrefixPatch;
+import com.evacipated.cardcrawl.modthespire.lib.SpireReturn;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.helpers.EventHelper;
 import com.megacrit.cardcrawl.localization.RelicStrings;
+import com.megacrit.cardcrawl.random.Random;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.relics.TinyChest;
 import com.megacrit.cardcrawl.rewards.chests.AbstractChest;
@@ -11,8 +16,6 @@ import com.megacrit.cardcrawl.rewards.chests.LargeChest;
 import com.megacrit.cardcrawl.rewards.chests.MediumChest;
 import com.megacrit.cardcrawl.rewards.chests.SmallChest;
 import relicrework.RelicRework;
-import com.megacrit.cardcrawl.helpers.EventHelper;
-import com.megacrit.cardcrawl.random.Random;
 
 public class TinyChest_Patch {
     private static final RelicStrings RELIC_STRINGS = CardCrawlGame.languagePack.getRelicStrings(TinyChest.ID);
@@ -35,14 +38,16 @@ public class TinyChest_Patch {
         }
     }
 
-    @SpirePatch(clz = EventHelper.class, method = "roll", paramtypez = { com.megacrit.cardcrawl.random.Random.class })
+    @SpirePatch(clz = EventHelper.class, method = "roll", paramtypez = {com.megacrit.cardcrawl.random.Random.class})
     public static class EventHelper_UndoTinyChestCounterIncrement {
         @SpirePostfixPatch
         public static void patch(Random eventRng) {
-            if (AbstractDungeon.player.hasRelic(TinyChest.ID) && RelicRework.isEnabled(TinyChest.ID)) {
-                AbstractRelic tinyChestRelic = AbstractDungeon.player.getRelic(TinyChest.ID);
-                tinyChestRelic.counter = -1;
+            if (!RelicRework.playerHasRelicThatIsEnabled(AbstractDungeon.player, TinyChest.ID)) {
+                return;
             }
+
+            AbstractRelic tinyChestRelic = AbstractDungeon.player.getRelic(TinyChest.ID);
+            tinyChestRelic.counter = -1;
         }
     }
 
@@ -50,7 +55,7 @@ public class TinyChest_Patch {
     public static class AbstractDungeon_ReplaceGetRandomChest {
         @SpirePrefixPatch
         public static SpireReturn<AbstractChest> patch() {
-            if (!RelicRework.isEnabled(TinyChest.ID) || !AbstractDungeon.player.hasRelic("Tiny Chest")) {
+            if (!RelicRework.playerHasRelicThatIsEnabled(AbstractDungeon.player, TinyChest.ID)) {
                 return SpireReturn.Continue();
             }
 
@@ -58,7 +63,8 @@ public class TinyChest_Patch {
             if (roll < MEDIUM_CHEST_CHANCE) {
                 RelicRework.logger.info("Medium chest!!");
                 return SpireReturn.Return(new MediumChest());
-            } else if (roll < MEDIUM_CHEST_CHANCE + LARGE_CHEST_CHANCE) {
+            }
+            if (roll < MEDIUM_CHEST_CHANCE + LARGE_CHEST_CHANCE) {
                 RelicRework.logger.info("Large chest!!");
                 return SpireReturn.Return(new LargeChest());
             }

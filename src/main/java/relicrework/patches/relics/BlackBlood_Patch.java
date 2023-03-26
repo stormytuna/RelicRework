@@ -4,10 +4,7 @@ import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePrefixPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireRawPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireReturn;
-import com.megacrit.cardcrawl.actions.common.HealAction;
-import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
-import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.localization.RelicStrings;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.relics.BlackBlood;
@@ -28,12 +25,12 @@ public class BlackBlood_Patch {
     public static class BlackBlood_AddOnMonsterDeathMethod {
         @SpireRawPatch
         public static void raw(CtBehavior ctMethodToPatch) throws CannotCompileException, NotFoundException {
-            CtClass ctClass = ctMethodToPatch.getDeclaringClass();
-            ClassPool classPool = ctClass.getClassPool();
+            CtClass ctBlackBloodClass = ctMethodToPatch.getDeclaringClass();
+            ClassPool classPool = ctBlackBloodClass.getClassPool();
             CtClass ctAbstractMonsterClass = classPool.get(AbstractMonster.class.getName());
 
-            CtMethod ctOnMonsterDeathMethod = CtNewMethod.make(CtClass.voidType, "onMonsterDeath", new CtClass[] { ctAbstractMonsterClass }, null, ON_MONSTER_DEATH_METHOD_BODY, ctClass);
-            ctClass.addMethod(ctOnMonsterDeathMethod);
+            CtMethod ctOnMonsterDeathMethod = CtNewMethod.make(CtClass.voidType, "onMonsterDeath", new CtClass[]{ctAbstractMonsterClass}, null, ON_MONSTER_DEATH_METHOD_BODY, ctBlackBloodClass);
+            ctBlackBloodClass.addMethod(ctOnMonsterDeathMethod);
         }
     }
 
@@ -42,7 +39,6 @@ public class BlackBlood_Patch {
         @SpirePrefixPatch
         public static SpireReturn<Void> patch(BlackBlood __instance) {
             return RelicRework.isEnabled(BlackBlood.ID) ? SpireReturn.Return() : SpireReturn.Continue();
-
         }
     }
 

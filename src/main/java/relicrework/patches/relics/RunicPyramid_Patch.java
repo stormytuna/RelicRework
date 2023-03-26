@@ -25,10 +25,10 @@ public class RunicPyramid_Patch {
     public static class RunicPyramid_AddOnPlayerEndTurnMethod {
         @SpireRawPatch
         public static void raw(CtBehavior ctMethodToPatch) throws CannotCompileException {
-            CtClass ctClass = ctMethodToPatch.getDeclaringClass();
+            CtClass ctRunicPyramidClass = ctMethodToPatch.getDeclaringClass();
 
-            CtMethod onPlayerEndTurnMethod = CtNewMethod.make(CtClass.voidType, "onPlayerEndTurn", null, null, ON_PLAYER_END_TURN_METHOD_BODY, ctClass);
-            ctClass.addMethod(onPlayerEndTurnMethod);
+            CtMethod onPlayerEndTurnMethod = CtNewMethod.make(CtClass.voidType, "onPlayerEndTurn", null, null, ON_PLAYER_END_TURN_METHOD_BODY, ctRunicPyramidClass);
+            ctRunicPyramidClass.addMethod(onPlayerEndTurnMethod);
         }
     }
 
@@ -51,14 +51,16 @@ public class RunicPyramid_Patch {
     public static class DiscardAtEndOfTurnAction_RemoveRunicPyramidEffect {
         @SpireInsertPatch(locator = Locator.class)
         public static void patch(DiscardAtEndOfTurnAction __instance) {
-            if (!RelicRework.isEnabled(RunicPyramid.ID)) {
+            AbstractPlayer player = AbstractDungeon.player;
+
+            if (!RelicRework.playerHasRelicThatIsEnabled(player, RunicPyramid.ID)) {
                 return;
             }
 
-            if (AbstractDungeon.player.hasRelic(RunicPyramid.ID) && !AbstractDungeon.player.hasPower("Equilibrium")) {
-                int tempSize = AbstractDungeon.player.hand.size();
+            if (!player.hasPower("Equilibrium")) {
+                int tempSize = player.hand.size();
                 for (int i = 0; i < tempSize; i++)
-                    AbstractDungeon.actionManager.addToTop(new DiscardAction(AbstractDungeon.player, null, AbstractDungeon.player.hand.size(), true, true));
+                    AbstractDungeon.actionManager.addToTop(new DiscardAction(player, null, player.hand.size(), true, true));
             }
         }
     }

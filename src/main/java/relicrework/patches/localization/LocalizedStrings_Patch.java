@@ -26,14 +26,12 @@ public class LocalizedStrings_Patch {
     public static class LocalizedStrings_ReplaceRelicStrings {
         @SpirePrefixPatch
         public static SpireReturn<RelicStrings> patch(LocalizedStrings __instance, String relicName) {
-            if (RelicRework.isEnabled(relicName)) {
-                RelicStrings newRelicStrings = LocalizedStrings_Patch.relics.get(RelicRework.makeID(relicName));
-                if (newRelicStrings != null) {
-                    return SpireReturn.Return(newRelicStrings);
-                }
+            if (!RelicRework.isEnabled(relicName)) {
+                return SpireReturn.Continue();
             }
 
-            return SpireReturn.Continue();
+            RelicStrings newRelicStrings = LocalizedStrings_Patch.relics.get(RelicRework.makeID(relicName));
+            return newRelicStrings == null ? SpireReturn.Continue() : SpireReturn.Return(newRelicStrings);
         }
     }
 }

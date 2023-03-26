@@ -40,23 +40,25 @@ public class CeramicFish_Patch {
     public static class ShopScreen_ApplyDiscount {
         @SpirePostfixPatch
         public static void patch(ShopScreen __instance, ArrayList<AbstractCard> coloredCards, ArrayList<AbstractCard> colorlessCards) {
-            if (RelicRework.isEnabled(CeramicFish.ID) && AbstractDungeon.player.hasRelic(CeramicFish.ID)) {
-                // Why is this even a private field :(
-                ArrayList<StoreRelic> relics =  ReflectionHacks.getPrivate(__instance, __instance.getClass(), "relics");
-                for (StoreRelic relic : relics) {
-                    int discountedPrice = relic.price - FLAT_DISCOUNT;
-                    relic.price = Math.max(discountedPrice, 0);
-                }
-                ReflectionHacks.setPrivate(__instance, __instance.getClass(), "relics", relics);
+            if (!RelicRework.playerHasRelicThatIsEnabled(AbstractDungeon.player, CeramicFish.ID)) {
+                return;
+            }
 
-                for (AbstractCard coloredCard : __instance.coloredCards) {
-                    int discountedPrice = coloredCard.price - FLAT_DISCOUNT;
-                    coloredCard.price = Math.max(discountedPrice, 0);
-                }
-                for (AbstractCard colorlessCard : __instance.colorlessCards) {
-                    int discountedPrice = colorlessCard.price - FLAT_DISCOUNT;
-                    colorlessCard.price = Math.max(discountedPrice, 0);
-                }
+            // Why is this even a private field :(
+            ArrayList<StoreRelic> relics = ReflectionHacks.getPrivate(__instance, __instance.getClass(), "relics");
+            for (StoreRelic relic : relics) {
+                int discountedPrice = relic.price - FLAT_DISCOUNT;
+                relic.price = Math.max(discountedPrice, 0);
+            }
+            ReflectionHacks.setPrivate(__instance, __instance.getClass(), "relics", relics);
+
+            for (AbstractCard coloredCard : __instance.coloredCards) {
+                int discountedPrice = coloredCard.price - FLAT_DISCOUNT;
+                coloredCard.price = Math.max(discountedPrice, 0);
+            }
+            for (AbstractCard colorlessCard : __instance.colorlessCards) {
+                int discountedPrice = colorlessCard.price - FLAT_DISCOUNT;
+                colorlessCard.price = Math.max(discountedPrice, 0);
             }
         }
     }

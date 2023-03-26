@@ -156,7 +156,7 @@
   },
   "${modID}:Ectoplasm": {
     "NAME": "Ectoplasm",
-    "FLAVOR": "This blob of slime and energy seems to pulse with life.",
+    "FLAVOR": "This blob of slime and enerfgy seems to pulse with life.",
     "DESCRIPTIONS": [
       "Shop prices are increased by 50%.",
       "Gain [E] at the start of your turn. "

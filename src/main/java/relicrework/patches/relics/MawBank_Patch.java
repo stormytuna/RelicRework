@@ -1,8 +1,6 @@
 package relicrework.patches.relics;
 
 import com.evacipated.cardcrawl.modthespire.lib.*;
-import com.megacrit.cardcrawl.core.CardCrawlGame;
-import com.megacrit.cardcrawl.localization.RelicStrings;
 import com.megacrit.cardcrawl.relics.MawBank;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import javassist.*;
@@ -24,14 +22,14 @@ public class MawBank_Patch {
     public static class MawBank_RawPatch {
         @SpireRawPatch
         public static void raw(CtBehavior ctMethodToPatch) throws NotFoundException, CannotCompileException {
-            CtClass ctClass = ctMethodToPatch.getDeclaringClass();
-            ClassPool ctClassPool = ctClass.getClassPool();
+            CtClass ctMawBankClass = ctMethodToPatch.getDeclaringClass();
+            ClassPool ctClassPool = ctMawBankClass.getClassPool();
 
-            CtClass clickableRelic = ctClassPool.get("com.evacipated.cardcrawl.mod.stslib.relics.ClickableRelic");
-            ctClass.addInterface(clickableRelic);
+            CtClass clickableRelicClass = ctClassPool.get("com.evacipated.cardcrawl.mod.stslib.relics.ClickableRelic");
+            ctMawBankClass.addInterface(clickableRelicClass);
 
-            CtMethod onRightClick = CtNewMethod.make(CtClass.voidType, "onRightClick", null, null, ON_RIGHT_CLICK_METHOD_BODY, ctClass);
-            ctClass.addMethod(onRightClick);
+            CtMethod onRightClickMethod = CtNewMethod.make(CtClass.voidType, "onRightClick", null, null, ON_RIGHT_CLICK_METHOD_BODY, ctMawBankClass);
+            ctMawBankClass.addMethod(onRightClickMethod);
         }
     }
 
@@ -39,9 +37,11 @@ public class MawBank_Patch {
     public static class MawBank_InitializeCounterField {
         @SpirePostfixPatch
         public static void patch(MawBank __instance) {
-            if (RelicRework.isEnabled(MawBank.ID)) {
-                __instance.counter = 0;
+            if (!RelicRework.isEnabled(MawBank.ID)) {
+                return;
             }
+
+            __instance.counter = 0;
         }
     }
 

@@ -28,10 +28,10 @@ public class Strawberry_Patch {
     public static class Strawberry_AddOnVictoryMethod {
         @SpireRawPatch
         public static void raw(CtBehavior ctMethodToPatch) throws CannotCompileException {
-            CtClass ctClass = ctMethodToPatch.getDeclaringClass();
+            CtClass ctStrawberryClass = ctMethodToPatch.getDeclaringClass();
 
-            CtMethod onVictory = CtNewMethod.make(CtClass.voidType, "onVictory", null, null, ON_VICTORY_METHOD_BODY, ctClass);
-            ctClass.addMethod(onVictory);
+            CtMethod onVictoryMethod = CtNewMethod.make(CtClass.voidType, "onVictory", null, null, ON_VICTORY_METHOD_BODY, ctStrawberryClass);
+            ctStrawberryClass.addMethod(onVictoryMethod);
         }
     }
 

@@ -30,18 +30,19 @@ public class Girya_Patch {
             "       this.grayscale = false;" +
             "   }" +
             "}";
+    private static final int COUNTER_STARTING_VALUE = 3;
 
     @SpirePatch(clz = Girya.class, method = SpirePatch.CONSTRUCTOR)
     public static class Girya_RawPatch {
         @SpireRawPatch
         public static void raw(CtBehavior ctMethodToPatch) throws CannotCompileException {
-            CtClass ctClass = ctMethodToPatch.getDeclaringClass();
+            CtClass ctGiryaClass = ctMethodToPatch.getDeclaringClass();
 
-            CtMethod onPlayerEndTurn = CtNewMethod.make(CtClass.voidType, "onPlayerEndTurn", null, null, ON_PLAYER_END_TURN_METHOD_BODY, ctClass);
-            ctClass.addMethod(onPlayerEndTurn);
+            CtMethod onPlayerEndTurnMethod = CtNewMethod.make(CtClass.voidType, "onPlayerEndTurn", null, null, ON_PLAYER_END_TURN_METHOD_BODY, ctGiryaClass);
+            ctGiryaClass.addMethod(onPlayerEndTurnMethod);
 
-            CtMethod onVictory = CtNewMethod.make(CtClass.voidType, "onVictory", null, null, ON_VICTORY_METHOD_BODY, ctClass);
-            ctClass.addMethod(onVictory);
+            CtMethod onVictoryMethod = CtNewMethod.make(CtClass.voidType, "onVictory", null, null, ON_VICTORY_METHOD_BODY, ctGiryaClass);
+            ctGiryaClass.addMethod(onVictoryMethod);
         }
     }
 
@@ -53,7 +54,7 @@ public class Girya_Patch {
                 return SpireReturn.Continue();
             }
 
-            __instance.counter = 3;
+            __instance.counter = COUNTER_STARTING_VALUE;
             return SpireReturn.Return();
         }
     }
@@ -70,9 +71,11 @@ public class Girya_Patch {
     public static class Girya_ResetCounterField {
         @SpirePostfixPatch
         public static void patch(Girya __instance) {
-            if (RelicRework.isEnabled(Girya.ID)) {
-                __instance.counter = -1;
+            if (!RelicRework.isEnabled(Girya.ID)) {
+                return;
             }
+
+            __instance.counter = -1;
         }
     }
 }

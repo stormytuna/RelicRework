@@ -8,6 +8,8 @@ import com.megacrit.cardcrawl.relics.StrikeDummy;
 import relicrework.RelicRework;
 
 public class StrikeDummy_Patch {
+    private static final float EXTRA_DAMAGE = 3.0F;
+
     @SpirePatch(clz = StrikeDummy.class, method = "atDamageModify")
     public static class StrikeDummy_ReplaceAtDamageModify {
         @SpirePrefixPatch
@@ -15,10 +17,10 @@ public class StrikeDummy_Patch {
             boolean isBasicOrCommon = card.rarity == AbstractCard.CardRarity.BASIC || card.rarity == AbstractCard.CardRarity.COMMON;
             boolean isAttack = card.type == AbstractCard.CardType.ATTACK;
             if (!RelicRework.isEnabled(StrikeDummy.ID) || !isBasicOrCommon || !isAttack) {
-                return RelicRework.isEnabled(StrikeDummy.ID) ? SpireReturn.Return(damage) : SpireReturn.Continue();
+                return SpireReturn.Continue();
             }
 
-            return SpireReturn.Return(damage + 3.0F);
+            return SpireReturn.Return(damage + EXTRA_DAMAGE);
         }
     }
 }

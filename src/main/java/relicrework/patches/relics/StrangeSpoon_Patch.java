@@ -1,6 +1,5 @@
 package relicrework.patches.relics;
 
-import basemod.ReflectionHacks;
 import com.evacipated.cardcrawl.mod.stslib.actions.common.MoveCardsAction;
 import com.evacipated.cardcrawl.modthespire.lib.*;
 import com.evacipated.cardcrawl.modthespire.patcher.PatchingException;
@@ -14,44 +13,44 @@ import javassist.CannotCompileException;
 import javassist.CtBehavior;
 import relicrework.RelicRework;
 
-import java.util.ArrayList;
-
 public class StrangeSpoon_Patch {
     @SpirePatch(clz = StrangeSpoon.class, method = SpirePatch.CONSTRUCTOR)
-    public static class StrangeSpoon_PostfixCtor {
+    public static class StrangeSpoon_SetCounter {
         @SpirePostfixPatch
         public static void patch(StrangeSpoon __instance) {
+            if (!RelicRework.isEnabled(StrangeSpoon.ID)) {
+                return;
+            }
+
             __instance.counter = 0;
         }
     }
 
     @SpirePatch(clz = UseCardAction.class, method = "update")
     public static class UseCardAction_RemoveStrangeSpoonEffect {
-        @SpireInsertPatch(locator = Locator.class, localvars = { "spoonProc" })
+        @SpireInsertPatch(locator = Locator.class, localvars = {"spoonProc"})
         public static void patch(UseCardAction __instance, @ByRef boolean[] spoonProc) {
             AbstractPlayer player = AbstractDungeon.player;
-            if (RelicRework.isEnabled(StrangeSpoon.ID) && player.hasRelic("Strange Spoon")) {
-                AbstractRelic strangeSpoon = player.getRelic("Strange Spoon");
-                // We should let our player move a card to their discard pile
-                if (strangeSpoon.counter == 2) {
-                    // ReflectionHacks.setPrivate(strangeSpoon, strangeSpoon.getClass(), "pulse", false);
-                    AbstractDungeon.actionManager.addToBottom(new RelicAboveCreatureAction(player, strangeSpoon));
-                    strangeSpoon.flash();
 
-                    AbstractDungeon.actionManager.addToBottom(new MoveCardsAction(player.discardPile, player.exhaustPile));
-
-                    strangeSpoon.counter = 0;
-                    spoonProc[0] = false;
-                    return;
-                }
-
-                // We should increment, and not discard this card
-                strangeSpoon.beginPulse();
-                // ReflectionHacks.setPrivate(strangeSpoon, strangeSpoon.getClass(), "pulse", true);
-                spoonProc[0] = false;
-
-                strangeSpoon.counter++;
+            if (!RelicRework.playerHasRelicThatIsEnabled(player, StrangeSpoon.ID)) {
+                return;
             }
+
+            spoonProc[0] = false;
+
+            AbstractRelic strangeSpoon = player.getRelic("Strange Spoon");
+            // We should let our player move a card to their discard pile
+            if (strangeSpoon.counter == 2) {
+                AbstractDungeon.actionManager.addToBottom(new RelicAboveCreatureAction(player, strangeSpoon));
+                strangeSpoon.flash();
+                strangeSpoon.counter = 0;
+                AbstractDungeon.actionManager.addToBottom(new MoveCardsAction(player.discardPile, player.exhaustPile));
+                return;
+            }
+
+            // We should increment, and not discard this card
+            strangeSpoon.beginPulse();
+            strangeSpoon.counter++;
         }
     }
 
@@ -59,7 +58,7 @@ public class StrangeSpoon_Patch {
         public int[] Locate(CtBehavior ctBehavior) throws PatchingException, CannotCompileException {
             Matcher matcher = new Matcher.FieldAccessMatcher(UseCardAction.class, "exhaustCard");
             int[] lines = LineFinder.findAllInOrder(ctBehavior, matcher);
-            return new int[] { lines[1] };
+            return new int[]{lines[1]};
         }
     }
 }
