@@ -203,5 +203,12 @@
     "DESCRIPTIONS": [
       "Your first Attack each turn deals #b3 additional damage."
     ]
+  },
+  "${modID}:Tiny House": {
+    "NAME": "Tiny House",
+    "FLAVOR": "\"A near perfect implementation of miniaturization. My finest work to date, but still not adequate.\" - The Architect",
+    "DESCRIPTIONS": [
+      "At the start of each combat, draw #b1 card, gain #b1 [E] , gain #b8 #yBlock, gain #b2 temporary #yStrength and gain #b2 temporary #yDexterity."
+    ]
   }
 }
