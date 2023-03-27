@@ -158,11 +158,13 @@ public class RelicRework implements
         ModLabel disabledLabel = new ModLabel(labelText, 400.0F, 730.0F, configPanel, label -> {
         });
         configPanel.addUIElement(disabledLabel);
+
         String[] relicChoices = {
                 CeramicFish.ID, MawBank.ID, Strawberry.ID, DarkstonePeriapt.ID, Pear.ID, StrikeDummy.ID, Girya.ID, Mango.ID, OldCoin.ID, Cauldron.ID, SnakeRing.ID, TinyChest.ID, DeadBranch.ID,
                 StrangeSpoon.ID, Enchiridion.ID, BustedCrown.ID, LizardTail.ID, DollysMirror.ID, WingBoots.ID, Orrery.ID, Astrolabe.ID, Ectoplasm.ID, RunicPyramid.ID, VelvetChoker.ID, BlackBlood.ID,
-                MarkOfPain.ID, FrozenCore.ID
+                MarkOfPain.ID, FrozenCore.ID, Brimstone.ID
         };
+
         for (int i = 0; i < relicChoices.length; i++) {
             String relicID = relicChoices[i];
             ModLabeledToggleButton disableButton = new ModLabeledToggleButton(CardCrawlGame.languagePack.getRelicStrings(relicID).NAME, xPos(i), yPos(i), Settings.CREAM_COLOR, FontHelper.charDescFont, !isEnabled(relicID), configPanel, label -> {

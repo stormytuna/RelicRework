@@ -196,5 +196,12 @@
     "DESCRIPTIONS": [
       "Replaces #bCracked #bCore. At the start of your turn, #yChannel #b1 #yFrost."
     ]
+  },
+  "${modID}:Brimstone": {
+    "NAME": "Brimstone",
+    "FLAVOR": "Emanates an infernal heat.",
+    "DESCRIPTIONS": [
+      "Your first Attack each turn deals #b3 additional damage."
+    ]
   }
 }
