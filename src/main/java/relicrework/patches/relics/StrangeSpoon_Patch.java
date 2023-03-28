@@ -32,7 +32,7 @@ public class StrangeSpoon_Patch {
         public static void patch(UseCardAction __instance, @ByRef boolean[] spoonProc) {
             AbstractPlayer player = AbstractDungeon.player;
 
-            if (!RelicRework.playerHasRelicThatIsEnabled(player, StrangeSpoon.ID)) {
+            if (!RelicRework.playerHasRelicThatIsEnabled(player, StrangeSpoon.ID) || !__instance.exhaustCard) {
                 return;
             }
 
@@ -40,7 +40,7 @@ public class StrangeSpoon_Patch {
 
             AbstractRelic strangeSpoon = player.getRelic("Strange Spoon");
             // We should let our player move a card to their discard pile
-            if (strangeSpoon.counter == 2) {
+            if (strangeSpoon.counter == 3) {
                 AbstractDungeon.actionManager.addToBottom(new RelicAboveCreatureAction(player, strangeSpoon));
                 strangeSpoon.flash();
                 strangeSpoon.counter = 0;
