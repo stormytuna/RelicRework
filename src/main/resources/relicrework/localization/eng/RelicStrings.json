@@ -210,5 +210,12 @@
     "DESCRIPTIONS": [
       "At the start of each combat, draw #b1 card, gain #b1 [E] , gain #b8 #yBlock, gain #b2 temporary #yStrength and gain #b2 temporary #yDexterity."
     ]
+  },
+  "${modID}:Juzu Bracelet": {
+    "NAME": "Juzu Bracelet",
+    "FLAVOR": "A ward against the unknown.",
+    "DESCRIPTIONS": [
+      "At the start of your first #b3 turns, gain #b4 #yBlock."
+    ]
   }
 }

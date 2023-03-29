@@ -162,7 +162,7 @@ public class RelicRework implements
         String[] relicChoices = {
                 CeramicFish.ID, MawBank.ID, Strawberry.ID, DarkstonePeriapt.ID, Pear.ID, StrikeDummy.ID, Girya.ID, Mango.ID, OldCoin.ID, Cauldron.ID, SnakeRing.ID, TinyChest.ID, DeadBranch.ID,
                 StrangeSpoon.ID, Enchiridion.ID, BustedCrown.ID, LizardTail.ID, DollysMirror.ID, WingBoots.ID, Orrery.ID, Astrolabe.ID, Ectoplasm.ID, RunicPyramid.ID, VelvetChoker.ID, BlackBlood.ID,
-                MarkOfPain.ID, FrozenCore.ID, Brimstone.ID, TinyHouse.ID
+                MarkOfPain.ID, FrozenCore.ID, Brimstone.ID, TinyHouse.ID, JuzuBracelet.ID
         };
 
         for (int i = 0; i < relicChoices.length; i++) {
