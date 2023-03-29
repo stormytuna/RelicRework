@@ -4,33 +4,18 @@ import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePrefixPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireRawPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireReturn;
-import com.megacrit.cardcrawl.actions.utility.UseCardAction;
-import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.relics.LizardTail;
 import javassist.*;
 import relicrework.RelicRework;
 
 public class LizardTail_Patch {
-    private static final String ON_USE_CARD_METHOD_BODY = "" +
-            "{" +
-            "   if (relicrework.RelicRework.isEnabled(\"Lizard Tail\") && !this.grayscale) {" +
-            "       this.counter++;" +
-            "       this.beginPulse();" +
-            "       if (this.counter >= 6) {" +
-            "           this.flash();" +
-            "           this.counter = -1;" +
-            "           this.grayscale = true;" +
-            "           this.addToBot(new com.megacrit.cardcrawl.actions.common.RelicAboveCreatureAction(com.megacrit.cardcrawl.dungeons.AbstractDungeon.player, this));" +
-            "           this.addToBot(new com.megacrit.cardcrawl.actions.common.GainEnergyAction(1));" +
-            "       }" +
-            "   }" +
-            "}";
     private static final String AT_TURN_START_METHOD_BODY = "" +
             "{" +
             "   if (relicrework.RelicRework.isEnabled(\"Lizard Tail\")) {" +
-            "       this.counter = 0;" +
-            "       this.grayscale = false;" +
-            "       this.beginPulse();" +
+            "       com.megacrit.cardcrawl.characters.AbstractPlayer player = com.megacrit.cardcrawl.dungeons.AbstractDungeon.player;" +
+            "       this.flash();" +
+            "       this.addToBot(new com.megacrit.cardcrawl.actions.common.RelicAboveCreatureAction(player, this));" +
+            "       this.addToBot(new com.megacrit.cardcrawl.actions.common.ApplyPowerAction(player, player, new com.megacrit.cardcrawl.powers.PlatedArmorPower(player, 1), 1));" +
             "   }" +
             "}";
 
@@ -39,12 +24,6 @@ public class LizardTail_Patch {
         @SpireRawPatch
         public static void raw(CtBehavior ctMethodToPatch) throws NotFoundException, CannotCompileException {
             CtClass ctLizardTailClass = ctMethodToPatch.getDeclaringClass();
-            ClassPool classPool = ctLizardTailClass.getClassPool();
-            CtClass ctAbstractCardClass = classPool.get(AbstractCard.class.getName());
-            CtClass ctUseCardActionClass = classPool.get(UseCardAction.class.getName());
-
-            CtMethod onUseCardMethod = CtNewMethod.make(CtClass.voidType, "onUseCard", new CtClass[]{ctAbstractCardClass, ctUseCardActionClass}, null, ON_USE_CARD_METHOD_BODY, ctLizardTailClass);
-            ctLizardTailClass.addMethod(onUseCardMethod);
 
             CtMethod atTurnStartMethod = CtNewMethod.make(CtClass.voidType, "atTurnStart", null, null, AT_TURN_START_METHOD_BODY, ctLizardTailClass);
             ctLizardTailClass.addMethod(atTurnStartMethod);

@@ -120,7 +120,7 @@
     "NAME": "Lizard Tail",
     "FLAVOR": "A fake tail to trick enemies during combat.",
     "DESCRIPTIONS": [
-      "Whenever you play your sixth card each turn, gain [E] ."
+      "At the start of your turn, gain #b1 #yPlated #yArmor."
     ]
   },
   "${modID}:DollysMirror": {
